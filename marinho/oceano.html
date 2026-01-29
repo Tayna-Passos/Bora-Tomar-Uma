@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Doações</title>
+    <link rel="icon" type="image/jpeg" href="../img/tartaruga.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ocean-blue': '#007AA3', // Azul Marinho Profundo
+                        'aqua-light': '#E0FFFF', // Azul Piscina Claro
+                        'turtle-shell': '#FF7F50', // Coral/Laranja para destaque
+                        'sea-foam': '#F0FFFF', // Branco suave
+                        'deep-sea': '#004D7A', // Azul escuro para o fundo da página
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados para o tema Turtle */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Cor de fallback caso a imagem não carregue */
+            background-color: #004D7A; /* deep-sea */
+            /* PROPRIEDADES DE IMAGEM RESTAURADAS */
+            background-image: url('../img/mar.jpg'); /* <- Mude o nome do arquivo aqui, se necessário */
+            background-size: cover; /* A imagem cobre a tela inteira */
+            background-position: center center;
+            background-attachment: fixed; /* Imagem fixa ao rolar */
+        }
+        .container-shadow {
+            box-shadow: 0 10px 30px rgba(0, 77, 122, 0.3);
+        }
+        /* Ajuste para a Treeview simulada (Tabela de Registros) */
+        .record-row:hover {
+            background-color: #ADD8E6; /* Azul Claro na seleção */
+            cursor: pointer;
+        }
+        
+        /* --- ESTILO PARA O FUNDO DO CABEÇALHO (BANNER) --- */
+        .header-bg {
+            /* Cor SÓLIDA AZUL MARINHO para o cabeçalho */
+            background-color: #007AA3; /* ocean-blue */
+            /* Remove propriedades de imagem */
+            background-image: none;
+            background-size: auto;
+            background-position: initial;
+        }
+
+        .text-shadow-lg {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra mais forte para o texto branco */
+        }
+        /* Estilo da barra de rolagem para combinar com o tema */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E0FFFF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #004D7A;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+
+    <div id="app" class="max-w-7xl mx-auto bg-sea-foam rounded-xl overflow-hidden container-shadow">
+
+        <header class="header-bg p-8 text-white rounded-t-xl mb-6 flex flex-col justify-center items-center">
+            
+            <div class="mb-4">
+                <img src="../img/fundo.jpg" alt="Tartaruga Marinha"
+                    class="w-32 h-32 object-cover rounded-full shadow-lg border-4 border-turtle-shell">
+            </div>
+            
+            <h1 class="text-4xl font-extrabold tracking-tight text-shadow-lg">
+                Projeto Marlim: Registro de Vendas & Doações
+            </h1>
+            <p class="mt-2 text-lg font-medium drop-shadow-md">Cada venda ajuda a proteger uma vida marinha!</p>
+        </header>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="md:col-span-2 bg-aqua-light p-4 rounded-lg border-2 border-ocean-blue/30">
+                <h2 class="text-xl font-bold text-ocean-blue mb-3">Resumo da Missão</h2>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="p-3 bg-sea-foam rounded-md shadow-md">
+                        <p class="text-sm font-medium text-gray-600">Total de Vendas (R$)</p>
+                        <p id="totalVendas" class="text-2xl font-extrabold text-ocean-blue">R$ 0,00</p>
+                    </div>
+                    <div class="p-3 bg-sea-foam rounded-md shadow-md">
+                        <p class="text-sm font-medium text-gray-600">Total Arrecadado (R$)</p>
+                        <p id="totalDoacoes" class="text-2xl font-extrabold text-turtle-shell">R$ 0,00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-1 bg-aqua-light p-4 rounded-lg border-2 border-ocean-blue/30 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-ocean-blue mb-1">Seu ID de Sessão</h2>
+                    <p class="text-sm text-gray-600 truncate">Você está contribuindo como:</p>
+                </div>
+                <div class="mt-2 p-2 bg-sea-foam rounded-md font-mono text-xs text-ocean-blue break-all">
+                    <span id="userIdDisplay">Inicializando...</span>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="lg:col-span-1 bg-aqua-light p-6 rounded-xl border border-gray-200">
+                <h2 id="formTitle" class="text-2xl font-bold text-ocean-blue mb-4">Registrar Nova Venda </h2>
+                <form id="vendaForm" class="space-y-4">
+                    
+                    <div>
+                        <label for="nome_cliente" class="block text-sm font-medium text-gray-700">Nome do Cliente:</label>
+                        <input type="text" id="nome_cliente" placeholder="Ex: João Silva" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-ocean-blue focus:border-ocean-blue">
+                    </div>
+                    
+                    <div>
+                        <label for="nome_bebida" class="block text-sm font-medium text-gray-700">Nome da Bebida:</label>
+                        <input type="text" id="nome_bebida" placeholder="Ex: Néctar do Mar" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-ocean-blue focus:border-ocean-blue">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="preco_bebida" class="block text-sm font-medium text-gray-700">Preço (R$):</label>
+                            <input type="number" id="preco_bebida" step="0.01" min="0.01" placeholder="9.90" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-ocean-blue focus:border-ocean-blue">
+                        </div>
+                        <div>
+                            <label for="doacao_tartaruga" class="block text-sm font-medium text-gray-700">Doação (R$):</label>
+                            <input type="number" id="doacao_tartaruga" step="0.01" min="0" placeholder="5.00" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-ocean-blue focus:border-ocean-blue">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="nome_tartaruga" class="block text-sm font-medium text-gray-700">Nome da Tartaruga "Adotada":</label>
+                        <input type="text" id="nome_tartaruga" placeholder="Ex: Marla" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:ring-ocean-blue focus:border-ocean-blue">
+                    </div>
+                    
+                    <div class="pt-2 space-y-3">
+                        <button type="submit" id="submitBtn" disabled class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-ocean-blue hover:bg-ocean-blue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ocean-blue transition ease-in-out duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Registrar Venda
+                        </button>
+                        <div id="editControls">
+                            <button type="button" id="cancelBtn" onclick="resetForm()" class="hidden w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition ease-in-out duration-150">
+                                Cancelar Edição
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="lg:col-span-2 bg-aqua-light p-6 rounded-xl border border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-ocean-blue">Registros Recentes</h2>
+                    </div>
+                
+                <div class="overflow-x-auto max-h-96" style="max-height: 500px;">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-ocean-blue/90 sticky top-0">
+                            <tr>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider rounded-tl-lg">Cliente</th>
+                                <th class="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Bebida</th>
+                                <th class="px-3 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">Preço</th>
+                                <th class="px-3 py-3 text-right text-xs font-medium text-white uppercase tracking-wider">Doação</th>
+                                
+                                <th class="px-3 py-3 text-left text-xs font-medium text-white uppercase tracking-wider rounded-tr-lg">Tartaruga</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="vendasTableBody" class="bg-white divide-y divide-gray-100">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div id="noRecords" class="text-center py-10 text-gray-500 hidden">Nenhum registro encontrado.</div>
+
+            </div>
+        </div>
+    </div>
+    
+    <div id="customModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-100 border-t-4 border-ocean-blue">
+            <h3 id="modalTitle" class="text-xl font-bold text-ocean-blue mb-4">Confirmação</h3>
+            <p id="modalMessage" class="text-gray-700 mb-6">Você tem certeza?</p>
+            <div class="flex justify-end space-x-3">
+                <button id="modalCancelBtn" class="py-2 px-4 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition ease-in-out duration-150">
+                    Cancelar
+                </button>
+                <button id="modalConfirmBtn" class="py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition ease-in-out duration-150">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importa os módulos necessários do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, query, setLogLevel } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        
+        // --- Variáveis Globais do Ambiente ---
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // --- CONFIGURAÇÃO FALLBACK PARA AMBIENTE LOCAL/SEM VARIÁVEIS ---
+        const FALLBACK_FIREBASE_CONFIG = {
+            apiKey: "DUMMY_API_KEY",
+            authDomain: "DUMMY_AUTH_DOMAIN",
+            projectId: "dummy-project-12345",
+            storageBucket: "DUMMY_STORAGE_BUCKET",
+            messagingSenderId: "DUMMY_MESSAGING_ID",
+            appId: "DUMMY_APP_ID"
+        };
+        
+        const firebaseConfig = (typeof __firebase_config !== 'undefined' && __firebase_config)
+            ? JSON.parse(__firebase_config)
+            : FALLBACK_FIREBASE_CONFIG;
+        
+        const isFallback = firebaseConfig === FALLBACK_FIREBASE_CONFIG;
+
+        // Variáveis de Estado
+        let db = null;
+        let auth = null;
+        let userId = null;
+        let isAuthReady = false;
+        let editingDocId = null;
+
+        // Referências do DOM
+        const form = document.getElementById('vendaForm');
+        const tabelaBody = document.getElementById('vendasTableBody');
+        const totalVendasEl = document.getElementById('totalVendas');
+        const totalDoacoesEl = document.getElementById('totalDoacoes');
+        const userIdDisplayEl = document.getElementById('userIdDisplay');
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const formTitle = document.getElementById('formTitle');
+        const noRecordsEl = document.getElementById('noRecords');
+        
+        // Campos do Formulário
+        const inputNomeCliente = document.getElementById('nome_cliente');
+        const inputNomeBebida = document.getElementById('nome_bebida');
+        const inputPrecoBebida = document.getElementById('preco_bebida');
+        const inputDoacaoTartaruga = document.getElementById('doacao_tartaruga');
+        const inputNomeTartaruga = document.getElementById('nome_tartaruga');
+        
+        // Referências do DOM para o modal
+        const customModal = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+
+        // --- 1. Inicialização do Firebase e Autenticação ---
+        
+        // Ativa o log de debug para ajudar a diagnosticar problemas
+        setLogLevel('debug');
+        
+        if (isFallback) {
+            console.warn("AVISO: Usando configuração Firebase Fallback. O registro pode não ser persistente. (Obrigatório para execução local)");
+            userIdDisplayEl.textContent = 'Modo de Teste Local (Não Persistente)';
+        } else {
+            userIdDisplayEl.textContent = 'Autenticando...';
+        }
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                } else {
+                    try {
+                        // Tenta autenticar se não houver usuário logado
+                        if (initialAuthToken && !isFallback) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                        userId = auth.currentUser.uid;
+                    } catch (error) {
+                        console.error("Erro na autenticação:", error);
+                        // Se falhar, usa um ID aleatório para permitir que a UI funcione
+                        userId = 'ID-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                    }
+                }
+                
+                // Atualiza o display com o ID real ou de teste
+                userIdDisplayEl.textContent = isFallback ? `TESTE: ${userId}` : userId;
+                isAuthReady = true;
+                submitBtn.disabled = false; // Habilita o botão
+                submitBtn.textContent = 'Registrar Venda';
+                setupRealtimeListener();
+            });
+
+        } catch (error) {
+            // Em caso de falha crítica na inicialização (ex: config inválida)
+            console.error("Falha crítica na inicialização do Firebase:", error);
+            userIdDisplayEl.textContent = 'ERRO CRÍTICO NA INICIALIZAÇÃO';
+            submitBtn.textContent = 'Erro Crítico';
+            submitBtn.disabled = true;
+        }
+
+        /**
+         * Retorna a referência da coleção de vendas.
+         */
+        function getVendasCollectionRef() {
+            if (!db) return null;
+            // Caminho: /artifacts/{appId}/public/data/vendas_doacoes
+            const path = `artifacts/${appId}/public/data/vendas_doacoes`;
+            return collection(db, path);
+        }
+
+        // --- 2. Funções CRUD (Criação/Atualização) ---
+        
+        /**
+         * Adiciona ou atualiza um registro de venda no Firestore.
+         */
+        async function saveVenda(e) {
+            e.preventDefault();
+
+            if (!isAuthReady) {
+                alertUser("Aguarde a inicialização do sistema antes de registrar.", "Aviso");
+                return;
+            }
+
+            const nome_cliente = inputNomeCliente.value.trim();
+            const nome_bebida = inputNomeBebida.value.trim();
+            const nome_tartaruga = inputNomeTartaruga.value.trim();
+            
+            // Tratamento robusto de números (aceita ponto ou vírgula)
+            const preco_bebida_str = inputPrecoBebida.value.replace(',', '.');
+            const doacao_tartaruga_str = inputDoacaoTartaruga.value.replace(',', '.');
+            
+            const preco_bebida = parseFloat(preco_bebida_str);
+            const doacao_tartaruga = parseFloat(doacao_tartaruga_str);
+
+            if (!nome_cliente || !nome_bebida || !nome_tartaruga || isNaN(preco_bebida) || isNaN(doacao_tartaruga) || preco_bebida <= 0 || doacao_tartaruga < 0) {
+                alertUser("Por favor, preencha todos os campos corretamente. Preço deve ser positivo.", "Erro de Validação");
+                return;
+            }
+
+            const vendaData = {
+                nome_cliente,
+                nome_bebida,
+                // Garante que os números sejam salvos com duas casas decimais no Firestore
+                preco_bebida: parseFloat(preco_bebida.toFixed(2)),
+                doacao_tartaruga: parseFloat(doacao_tartaruga.toFixed(2)),
+                nome_tartaruga,
+                userId: userId,
+                timestamp: new Date()
+            };
+
+            submitBtn.textContent = editingDocId ? "Atualizando..." : "Registrando...";
+            submitBtn.disabled = true;
+
+            try {
+                if (editingDocId) {
+                    const docRef = doc(getVendasCollectionRef(), editingDocId);
+                    await updateDoc(docRef, vendaData);
+                    alertUser("Registro atualizado com sucesso!", "Sucesso");
+                } else {
+                    await addDoc(getVendasCollectionRef(), vendaData);
+                    alertUser("Venda registrada com sucesso!", "Sucesso");
+                }
+                resetForm();
+            } catch (error) {
+                console.error("Erro ao salvar/atualizar venda:", error);
+                alertUser(`Falha ao salvar o registro. Detalhes: ${error.message}. (Se estiver em Modo de Teste, isso é esperado se a URL não for válida.)`, "Erro no Banco de Dados");
+            } finally {
+                submitBtn.disabled = !isAuthReady;
+                if (editingDocId) {
+                    submitBtn.textContent = 'Atualizar Venda';
+                } else {
+                    submitBtn.textContent = 'Registrar Venda';
+                }
+            }
+        }
+
+        /**
+         * Função de exclusão removida a pedido do usuário.
+         * A função confirmDelete() foi removida.
+         */
+        
+        
+        /**
+         * Solicita confirmação e deleta um registro pelo ID. (Esta função não é mais usada na tabela)
+         */
+        async function promptDeleteRecord(id) {
+            if (!isAuthReady) {
+                alertUser("Aguarde a inicialização do sistema.", "Aviso");
+                return;
+            }
+
+            const confirmed = await showCustomConfirmation("Confirmar Exclusão Rápida",
+                "Tem certeza que deseja EXCLUIR este registro da lista? Esta ação é irreversível.");
+
+            if (!confirmed) return;
+            
+            try {
+                await deleteDoc(doc(getVendasCollectionRef(), id));
+                alertUser("Registro excluído com sucesso!", "Sucesso");
+                
+                if (editingDocId === id) {
+                    resetForm();
+                }
+            } catch (error) {
+                console.error("Erro ao deletar venda:", error);
+                alertUser(`Falha ao excluir o registro. Detalhes: ${error.message}`, "Erro no Banco de Dados");
+            }
+        }
+
+        // A função window.confirmClearAll foi removida, pois o botão "Limpar Tudo" foi retirado do HTML.
+
+        // --- 3. Funções de Visualização e Renderização ---
+
+        /**
+         * Configura o listener em tempo real para o Firestore.
+         */
+        function setupRealtimeListener() {
+            const vendasRef = getVendasCollectionRef();
+            if (!vendasRef) return;
+
+            onSnapshot(vendasRef, (snapshot) => {
+                const vendas = [];
+                snapshot.forEach(doc => {
+                    vendas.push({ id: doc.id, ...doc.data() });
+                });
+                
+                vendas.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+
+                renderTable(vendas);
+                calculateTotals(vendas);
+            }, (error) => {
+                console.error("Erro no listener do Firestore:", error);
+                alertUser(`Falha ao carregar dados em tempo real: ${error.message}`, "Erro de Conexão");
+            });
+        }
+
+        /**
+         * Renderiza a tabela de registros na interface.
+         */
+        function renderTable(vendas) {
+            tabelaBody.innerHTML = '';
+            
+            if (vendas.length === 0) {
+                noRecordsEl.classList.remove('hidden');
+                return;
+            }
+            noRecordsEl.classList.add('hidden');
+
+            vendas.forEach(venda => {
+                const row = tabelaBody.insertRow();
+                row.classList.add('record-row', 'transition', 'duration-100', 'ease-in-out', 'hover:bg-cyan-100');
+                row.setAttribute('data-id', venda.id);
+                
+                // Formatação para R$
+                const preco = venda.preco_bebida || 0;
+                const doacao = venda.doacao_tartaruga || 0;
+                const precoFormatado = `R$ ${preco.toFixed(2).replace('.', ',')}`;
+                const doacaoFormatada = `R$ ${doacao.toFixed(2).replace('.', ',')}`;
+
+                const cellsData = [
+                    venda.nome_cliente,
+                    venda.nome_bebida,
+                    precoFormatado,
+                    doacaoFormatada,
+                    venda.nome_tartaruga
+                ];
+
+                cellsData.forEach((text, index) => {
+                    const cell = row.insertCell(index);
+                    cell.textContent = text;
+                    // Note que agora temos 5 colunas no total, de 0 a 4.
+                    cell.classList.add('px-3', 'py-2', 'whitespace-nowrap', 'text-sm', 'text-gray-800', 'border-b', 'border-gray-100');
+                    if (index === 2 || index === 3) {
+                        cell.classList.add('text-right', 'font-mono');
+                    } else {
+                        cell.classList.add('text-left');
+                    }
+                });
+
+                // Ação para carregar para edição (clique em qualquer célula da linha)
+                const editClickHandler = (e) => {
+                    loadRecordForEdit(venda.id, venda);
+                };
+                row.addEventListener('click', editClickHandler);
+            });
+        }
+
+        /**
+         * Calcula e exibe os totais de vendas e doações.
+         */
+        function calculateTotals(vendas) {
+            const totalVendas = vendas.reduce((sum, v) => sum + (v.preco_bebida || 0), 0);
+            const totalDoacoes = vendas.reduce((sum, v) => sum + (v.doacao_tartaruga || 0), 0);
+            
+            totalVendasEl.textContent = `R$ ${totalVendas.toFixed(2).replace('.', ',')}`;
+            totalDoacoesEl.textContent = `R$ ${totalDoacoes.toFixed(2).replace('.', ',')}`;
+        }
+
+        // --- 4. Funções de Interface e Utilidade ---
+        
+        /**
+         * Exibe um modal de confirmação customizado.
+         */
+        function showCustomConfirmation(title, message) {
+            return new Promise(resolve => {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                customModal.classList.remove('hidden');
+
+                const handleConfirm = () => {
+                    customModal.classList.add('hidden');
+                    modalConfirmBtn.removeEventListener('click', handleConfirm);
+                    modalCancelBtn.removeEventListener('click', handleCancel);
+                    resolve(true);
+                };
+
+                const handleCancel = () => {
+                    customModal.classList.add('hidden');
+                    modalConfirmBtn.removeEventListener('click', handleConfirm);
+                    modalCancelBtn.removeEventListener('click', handleCancel);
+                    resolve(false);
+                };
+
+                modalConfirmBtn.addEventListener('click', handleConfirm);
+                modalCancelBtn.addEventListener('click', handleCancel);
+            });
+        }
+        
+        /**
+         * Função para logar mensagens de usuário.
+         */
+        function alertUser(message, title) {
+            // Em um ambiente de produção real, você usaria um sistema de notificação (Toast, Alert, etc.)
+            // Em vez de apenas console.log.
+            console.log(`${title}: ${message}`);
+        }
+
+        /**
+         * Limpa o formulário e retorna ao modo de registro.
+         */
+        window.resetForm = function() {
+            editingDocId = null;
+            formTitle.textContent = "Registrar Nova Venda";
+            form.reset();
+            
+            submitBtn.textContent = 'Registrar Venda';
+            cancelBtn.classList.add('hidden');
+        };
+
+        /**
+         * Carrega os dados de um registro selecionado no formulário para edição.
+         */
+        function loadRecordForEdit(id, venda) {
+            editingDocId = id;
+            formTitle.textContent = "Editar Registro (ID: " + id.substring(0, 4) + "...)";
+            
+            // Popula o formulário com os dados da venda
+            inputNomeCliente.value = venda.nome_cliente;
+            inputNomeBebida.value = venda.nome_bebida;
+            // Usamos .toFixed(2) para garantir duas casas decimais, mas sem o R$ para o input number
+            inputPrecoBebida.value = (venda.preco_bebida || 0).toFixed(2);
+            inputDoacaoTartaruga.value = (venda.doacao_tartaruga || 0).toFixed(2);
+            inputNomeTartaruga.value = venda.nome_tartaruga;
+
+            // Altera o texto do botão principal e exibe botões de edição/deleção
+            submitBtn.textContent = 'Atualizar Venda';
+            cancelBtn.classList.remove('hidden');
+
+            // Garante que a tela role para o formulário no celular
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // --- 5. Event Listeners ---
+        form.addEventListener('submit', saveVenda);
+
+        // Adiciona a função resetForm ao escopo global (embora já esteja usando window.resetForm)
+        window.resetForm = resetForm;
+        
+    </script>
+
+</body>
+</html>
