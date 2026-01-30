@@ -254,33 +254,42 @@ function money(v){ return 'R$ ' + v.toFixed(2).replace('.', ','); }
 function saveCart(){ localStorage.setItem('userCart', JSON.stringify(cart)); }
 function updateBadge(){ const b = document.getElementById('cart-count'); if(b) b.innerText = Object.values(cart).reduce((s,i)=>s+i.qty,0); }
 
-// NOVO: Função para obter o valor numérico de um campo formatado em dinheiro
+// Função para obter o valor numérico de um campo formatado em dinheiro
 function getMoneyValue(id) {
     const el = document.getElementById(id);
     if (!el) return 0;
-    // Remove "R$", pontos de milhar, e substitui vírgula decimal por ponto.
     const value = el.value.replace('R$', '').replace(/\./g, '').replace(',', '.').trim();
     return parseFloat(value) || 0;
 }
 
-// NOVO: Função renderCart MODIFICADA para incluir a Gorjeta
+// FUNÇÃO RENDERIZAR CARRINHO COM A CORREÇÃO DE CAMINHO DE IMAGEM
 function renderCart(){
-    const el = document.getElementById('cartItems'); el.innerHTML = '';
+    const el = document.getElementById('cartItems'); 
+    el.innerHTML = '';
     let subtotal = 0;
     const keys = Object.keys(cart);
-    if(keys.length===0){
+
+    if(keys.length === 0){
         el.innerHTML = '<div style="color:var(--muted)">Seu carrinho está vazio.</div>';
         document.getElementById('subtotal').innerText = 'R$ 0,00';
-        document.getElementById('total').innerText='R$ 0,00';
+        document.getElementById('total').innerText = 'R$ 0,00';
         return;
     }
 
-    keys.forEach(k=>{
+    keys.forEach(k => {
         const it = cart[k];
         subtotal += it.price * it.qty;
-        const div = document.createElement('div'); div.className = 'cart-item';
+
+        // --- CORREÇÃO DO CAMINHO PARA GITHUB PAGES ---
+        // Se a imagem já vier com "img/", nós adicionamos "../" para sair da pasta carrinho.
+        // Se ela vier com "../img/", removemos o excesso para não duplicar.
+        let cleanImgPath = it.img.replace('../', ''); 
+        const imgPath = "../" + cleanImgPath;
+
+        const div = document.createElement('div'); 
+        div.className = 'cart-item';
         div.innerHTML = `
-            <div class="ci-thumb"><img src="${it.img}"/></div>
+            <div class="ci-thumb"><img src="${imgPath}" alt="${it.name}"/></div>
             <div class="ci-main">
                 <div class="name">${it.name}</div>
                 <div class="ci-meta">${it.qty} × ${money(it.price)}</div>
@@ -295,20 +304,18 @@ function renderCart(){
         el.appendChild(div);
     });
 
-    const tipAmount = getMoneyValue('motoboy-tip'); // Obtém o valor da gorjeta
-    const total = subtotal + tipAmount; // Calcula o novo total
+    const tipAmount = getMoneyValue('motoboy-tip');
+    const total = subtotal + tipAmount;
 
     document.getElementById('subtotal').innerText = money(subtotal);
     document.getElementById('discount').innerText = 'R$ 0,00';
     
-    // Adicionar/Atualizar linha de Gorjeta no resumo
     let tipRow = document.getElementById('tipRow');
     if (!tipRow) {
         tipRow = document.createElement('div');
         tipRow.className = 'row';
         tipRow.id = 'tipRow';
         tipRow.innerHTML = `<div>Gorjeta</div><div id="tipAmount">${money(tipAmount)}</div>`;
-        // Encontra a linha Total e insere a linha Gorjeta antes dela
         const totalRow = document.querySelector('.summary .total').parentNode;
         totalRow.parentNode.insertBefore(tipRow, totalRow);
     } else {
@@ -322,14 +329,14 @@ function renderCart(){
 function changeQty(id,delta){ if(!cart[id]) return; cart[id].qty += delta; if(cart[id].qty<=0) delete cart[id]; saveCart(); renderCart(); updateBadge(); }
 function removeItem(id){ delete cart[id]; saveCart(); renderCart(); updateBadge(); }
 
-renderCart(); updateBadge();
+renderCart(); 
+updateBadge();
 
 // limpar carrinho
 document.getElementById('clearBtn').addEventListener('click', ()=>{
     if(confirm('Limpar o carrinho?')){ 
         cart={}; 
         saveCart(); 
-        // Limpa também os campos de gorjeta/troco ao limpar
         document.getElementById('motoboy-tip').value = '';
         document.getElementById('cash-change').value = '';
         renderCart(); 
@@ -337,21 +344,18 @@ document.getElementById('clearBtn').addEventListener('click', ()=>{
     }
 });
 
-// helpers UI pagamento
+// Helpers de Pagamento
 function hideAllPayment(){ document.querySelectorAll('.payment-fields').forEach(d=>d.style.display='none'); }
 function mostrarCampos(id){ hideAllPayment(); document.getElementById(id).style.display='block'; generateQR(); }
 
-// gerar payload PIX (simulação) e QR via api.qrserver (apenas demo)
 function buildPixPayload(amount){
     const merchant = 'BORATOMA';
-    // payload demo simplificado (NÃO é um payload oficial para produção)
     const amountCents = Math.round(amount*100).toString();
-    const payload = `00020126580014BR.GOV.BCB.PIX01${merchant}5204000053039865405${amountCents}5802BR5920BORATOMA43274000000000`;
-    return payload;
+    return `00020126580014BR.GOV.BCB.PIX01${merchant}5204000053039865405${amountCents}5802BR5920BORATOMA43274000000000`;
 }
 
 function generateQR(){
-    const totalText = document.getElementById('total').innerText.replace('R$ ','').replace(',','.');
+    const totalText = document.getElementById('total').innerText.replace('R$ ','').replace(/\./g, '').replace(',','.');
     const total = parseFloat(totalText)||0;
     const payload = buildPixPayload(total);
     const url = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(payload);
@@ -359,124 +363,63 @@ function generateQR(){
     document.getElementById('pixCode').value = payload;
 }
 
-// copiar PIX
-document.getElementById('copyPixBtn').addEventListener('click', copiarPix);
-function copiarPix(){
+document.getElementById('copyPixBtn').addEventListener('click', ()=>{
     const campo = document.getElementById('pixCode');
     navigator.clipboard.writeText(campo.value).then(()=>{
         const m=document.getElementById('pixMsg');
         m.style.display='inline-block';
         setTimeout(()=>m.style.display='none',2000);
-    }).catch(()=>alert('Não foi possível copiar. Use Ctrl+C.'));
-}
-
-// máscaras simples UX (somente visual)
-function maskCardInput(el){
-    if(!el) return;
-    el.addEventListener('input', (e)=>{
-        let v=e.target.value.replace(/\D/g,'').slice(0,16);
-        v = v.replace(/(\d{4})(?=\d)/g, '$1 ');
-        e.target.value = v;
     });
-}
-maskCardInput(document.getElementById('cc-number'));
-maskCardInput(document.getElementById('dc-number'));
+});
 
-function maskExpiry(el){
-    if(!el) return;
-    el.addEventListener('input', (e)=>{
-        let v=e.target.value.replace(/\D/g,'').slice(0,4);
-        if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2);
-        e.target.value=v;
-    });
-}
-maskExpiry(document.getElementById('cc-exp'));
-maskExpiry(document.getElementById('dc-exp'));
-
-// NOVO: Máscara simples para campos de dinheiro
+// Máscaras e Eventos
 function maskMoney(el) {
     if (!el) return;
     el.addEventListener('input', (e) => {
-        let v = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+        let v = e.target.value.replace(/\D/g, '');
         if (v.length === 0) {
             e.target.value = '';
-            // Se for o campo de gorjeta, recalcula o total
             if (e.target.id === 'motoboy-tip') renderCart();
             return;
         }
-
-        v = v.padStart(3, '0'); // Garante que tenha pelo menos 3 dígitos (000)
-        let integerPart = v.slice(0, -2);
+        v = v.padStart(3, '0');
+        let integerPart = v.slice(0, -2).replace(/^0+/, '') || '0';
         let decimalPart = v.slice(-2);
-        
-        // Remove zeros à esquerda da parte inteira e adiciona pontos de milhar
-        integerPart = integerPart.replace(/^0+/, '');
-        if (integerPart === '') integerPart = '0';
-
-        v = 'R$ ' + integerPart.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') + ',' + decimalPart;
-        e.target.value = v;
-
-        // Se for o campo de gorjeta, recalcula o total
-        if (e.target.id === 'motoboy-tip') {
-            renderCart();
-        }
+        e.target.value = 'R$ ' + integerPart.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') + ',' + decimalPart;
+        if (e.target.id === 'motoboy-tip') renderCart();
     });
 }
 maskMoney(document.getElementById('motoboy-tip'));
 maskMoney(document.getElementById('cash-change'));
 
-
-// finalizar compra com modal
 const confirmModal = document.getElementById('confirmModal');
-const confirmAmount = document.getElementById('confirmAmount');
 const finishBtn = document.getElementById('finishBtn');
-const modalOk = document.getElementById('modalOk');
-const modalCancel = document.getElementById('modalCancel');
 
 finishBtn.addEventListener('click', ()=>{
     if(Object.keys(cart).length===0){ alert('Seu carrinho está vazio!'); return; }
     const method = document.querySelector('input[name="payment"]:checked');
     if(!method){ alert('Escolha uma forma de pagamento'); return; }
-    confirmAmount.innerText = document.getElementById('total').innerText;
+    document.getElementById('confirmAmount').innerText = document.getElementById('total').innerText;
     confirmModal.classList.add('active');
 });
 
-modalCancel.addEventListener('click', ()=>{ confirmModal.classList.remove('active'); });
+document.getElementById('modalCancel').addEventListener('click', ()=>{ confirmModal.classList.remove('active'); });
 
-modalOk.addEventListener('click', ()=>{
+document.getElementById('modalOk').addEventListener('click', ()=>{
     confirmModal.classList.remove('active');
     const method = document.querySelector('input[name="payment"]:checked').value;
-    
-    // Lógica para Troco (simulação)
-    if (method === 'dinheiro') {
-        const totalValue = getMoneyValue('total');
-        const changeValue = getMoneyValue('cash-change');
-        if (changeValue > 0 && changeValue < totalValue) {
-            alert(`O valor de troco (R$ ${money(changeValue)}) é menor que o total. Por favor, insira um valor maior ou igual ao total.`);
-            return; // Impede a finalização
-        }
-        if (changeValue > 0) {
-            alert(`Pagamento em Dinheiro! Troco: ${money(changeValue - totalValue)}`);
-        } else {
-            alert('Pagamento em Dinheiro (Valor Exato).');
-        }
-    }
-
-    // simula processamento e limpa carrinho
+    alert('Pedido via '+method.toUpperCase()+ ' realizado! Obrigado pela compra 😊');
     cart = {};
     saveCart();
-    renderCart(); updateBadge();
-    document.getElementById('motoboy-tip').value = '';
-    document.getElementById('cash-change').value = '';
-    
-    alert('Pedido via '+method.toUpperCase()+ ' realizado! Obrigado pela compra 😊');
+    renderCart();
+    updateBadge();
 });
 
-// mostra campos quando escolher a forma
 document.getElementById('opt-pix').addEventListener('click', ()=>{ mostrarCampos('pix-fields'); });
 document.getElementById('opt-cred').addEventListener('click', ()=>{ mostrarCampos('cred-fields'); });
 document.getElementById('opt-deb').addEventListener('click', ()=>{ mostrarCampos('deb-fields'); });
 document.getElementById('opt-cash').addEventListener('click', ()=>{ mostrarCampos('cash-fields'); });
+
 
 </script>
 </body>
