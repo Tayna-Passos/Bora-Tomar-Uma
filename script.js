@@ -22,51 +22,51 @@ const originalCatalogData = {
     fermentadas: {
         title: "Fermentadas: Cervejas, Vinhos e Mais",
         products: [
-            { name: "Cerveja Itaipava 600ml", price: 7.50, img: "/img/itaipava.jpg" },
-            { name: "Vinho Tinto Malbec", price: 59.90, img: "/img/vinho.webp" },
-            { name: "Sidra Cereser", price: 15.00, img: "/img/cereser.jpg" },
-            { name: "Cerveja Artesanal Baden", price: 22.00, img: "/img/baden.png" },
-            { name: "Cerveja Pilsen Lata", price: 5.50, img: "/img/pilsen.jpg" },
-            { name: "Vinho Tinto Bordô Suave Góes", price: 29.90, img: "/img/goes.jpg" },
+            { name: "Cerveja Itaipava 600ml", price: 7.50, img: "./img/itaipava.jpg" },
+            { name: "Vinho Tinto Malbec", price: 59.90, img: "./img/vinho.webp" },
+            { name: "Sidra Cereser", price: 15.00, img: "./img/cereser.jpg" },
+            { name: "Cerveja Artesanal Baden", price: 22.00, img: "./img/baden.png" },
+            { name: "Cerveja Pilsen Lata", price: 5.50, img: "./img/pilsen.jpg" },
+            { name: "Vinho Tinto Bordô Suave Góes", price: 29.90, img: "./img/goes.jpg" },
 
         ]
     },
     destiladas: {
         title: "Destiladas: Fogo, Força e Sabor",
         products: [
-            { name: "Cachaça Prata Seleta 1L", price: 25.00, img: "/img/cachaca.webp" },
-            { name: "Whisky Ballantines Finest 8 anos 1 Litro", price: 89.90, img: "/img/whisky.jpg" },
-            { name: "Gin Tônica Ready-to-Drink", price: 18.00, img: "/img/gin.webp" },
-            { name: "Tequila Jose Cuervo Ouro 750ml", price: 149.00, img: "/img/tequila.jpg" },
-            { name: "Vodka Smirnoff 1L", price: 65.00, img: "/img/vodkas.webp" },
-            { name: "Rum Bacardi", price: 55.00, img: "/img/rum.jpg" },
+            { name: "Cachaça Prata Seleta 1L", price: 25.00, img: "./img/cachaca.webp" },
+            { name: "Whisky Ballantines Finest 8 anos 1 Litro", price: 89.90, img: "./img/whisky.jpg" },
+            { name: "Gin Tônica Ready-to-Drink", price: 18.00, img: "./img/gin.webp" },
+            { name: "Tequila Jose Cuervo Ouro 750ml", price: 149.00, img: "./img/tequila.jpg" },
+            { name: "Vodka Smirnoff 1L", price: 65.00, img: "./img/vodkas.webp" },
+            { name: "Rum Bacardi", price: 55.00, img: "./img/rum.jpg" },
         ]
     },
     licorosas: {
         title: "Licorosas: Doces e Aromáticas",
         products: [
-            { name: "Licor 43 Chocolate 700ml", price: 45.00, img: "/img/licor.webp" },
-            { name: "Vermute Tinto Martini", price: 32.50, img: "/img/vermute.jpg" },
-            { name: "Aperitivo Amargo Campari 900ml", price: 55.00, img: "/img/aperitivo.webp" },
-            { name: "Licor de Café e Creme de Baunilha Sheridan's Irlandês 700ml", price: 160.00, img: "/img/cafe.webp" },
+            { name: "Licor 43 Chocolate 700ml", price: 45.00, img: "./img/licor.webp" },
+            { name: "Vermute Tinto Martini", price: 32.50, img: "./img/vermute.jpg" },
+            { name: "Aperitivo Amargo Campari 900ml", price: 55.00, img: "./img/aperitivo.webp" },
+            { name: "Licor de Café e Creme de Baunilha Sheridan's Irlandês 700ml", price: 160.00, img: "./img/cafe.webp" },
         ]
     },
     'nao-alcoolicas': {
         title: "Não Alcoólicas: Hidratação e Energia",
         products: [
-            { name: "Red Bull Energy Drink", price: 12.00, img: "/img/redbull.webp" },
-            { name: "Suco Natural Laranja 1,5L", price: 10.00, img: "/img/suco.webp" },
-            { name: "Água Mineral com Gás Crystal", price: 3.50, img: "/img/agua.webp" },
-            { name: "Gatorade Isotônico 500ml", price: 5.90, img: "/img/gatorade.webp" },
+            { name: "Red Bull Energy Drink", price: 12.00, img: "./img/redbull.webp" },
+            { name: "Suco Natural Laranja 1,5L", price: 10.00, img: "./img/suco.webp" },
+            { name: "Água Mineral com Gás Crystal", price: 3.50, img: "./img/agua.webp" },
+            { name: "Gatorade Isotônico 500ml", price: 5.90, img: "./img/gatorade.webp" },
         ]
     }
 };
 
 const mostSoldProducts = [
-    { id: 1, name: "Cerveja Itaipava 600ml", price: 7.50, img: "/img/itaipava.jpg" },
-    { id: 2, name: "Vinho Tinto Malbec", price: 59.90, img: "/img/vinho.webp" },
-    { id: 3, name: "Vodka Smirnoff 1L", price: 65.00, img: "/img/vodkas.webp" },
-    { id: 4, name: "Gatorade Isotônico 500ml", price: 5.90, img: "/img/gatorade.webp" },
+    { id: 1, name: "Cerveja Itaipava 600ml", price: 7.50, img: "./img/itaipava.jpg" },
+    { id: 2, name: "Vinho Tinto Malbec", price: 59.90, img: "./img/vinho.webp" },
+    { id: 3, name: "Vodka Smirnoff 1L", price: 65.00, img: "./img/vodkas.webp" },
+    { id: 4, name: "Gatorade Isotônico 500ml", price: 5.90, img: "./img/gatorade.webp" },
 ];
 
 const catalogProducts = processCatalogData(originalCatalogData);
