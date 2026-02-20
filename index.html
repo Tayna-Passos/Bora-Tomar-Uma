@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bora Tomar Uma?</title> 
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="./img/bebida-gelada.gif">
+    
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
+    <style>
+        .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 0 20px;
+        }
+
+        .search-overlay.active { display: flex; }
+
+        .search-input {
+            width: 80%;
+            max-width: 600px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #333;
+            color: white;
+        }
+
+        .close-search {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+        
+        #cart-count {
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        /* ESTILO DO ZOOM */
+        #modal-zoom {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        #modal-zoom img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .product-card img { cursor: zoom-in; }
+    </style>
+</head>
+<body>
+    
+    <div id="modal-zoom" onclick="this.style.display='none'">
+        <img id="img-zoom" src="">
+    </div>
+    
+    <div id="cart-toast" class="cart-notification" aria-live="polite">
+        <i class="fas fa-check-circle"></i> Produto adicionado ao carrinho!
+    </div>
+    
+    <header class="app-header" role="banner">
+        <div class="header-content">
+            <h1 class="logo">🍺Bora tomar uma?🍺</h1>
+            <div class="header-icons">
+                <button class="icon-button" id="search-icon" aria-label="Abrir barra de pesquisa">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="./login/login.html" aria-label="Ir para Login/Cadastro">
+                    <button class="icon-button">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-overlay" id="search-bar" role="search" aria-hidden="true">
+        <input type="text" placeholder="Qual bebida você procura hoje?" class="search-input" aria-label="Campo de pesquisa">
+        <button class="close-search" id="close-search" aria-label="Fechar barra de pesquisa">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <main class="content-area" role="main">
+        <section class="product-spotlight dark-background" aria-labelledby="spotlight-title">
+            <h3 id="spotlight-title" class="section-title">Os Mais Vendidos da Galera!</h3>
+            <div class="products-container" id="mais-vendidos-container">
+                <article class="product-card" data-id="1"> 
+                    <img src="./img/itaipava.jpg" alt="Itaipava 600ml" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Cerveja Itaipava</p>
+                    <p class="product-price">R$ 7,50</p>
+                    <button class="add-to-cart" data-id="1"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="2">
+                    <img src="./img/vinho.webp" alt="Vinho Malbec" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Vinho Tinto Malbec</p>
+                    <p class="product-price">R$ 59,90</p>
+                    <button class="add-to-cart" data-id="2"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="3">
+                    <img src="./img/vodkas.webp" alt="Smirnoff 1L" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Vodka Smirnoff</p>
+                    <p class="product-price">R$ 65,00</p>
+                    <button class="add-to-cart" data-id="3"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="4">
+                    <img src="./img/redbull.webp" alt="Red Bull 250ml" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Energético Red Bull</p>
+                    <p class="product-price">R$ 12,00</p>
+                    <button class="add-to-cart" data-id="4"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="6">
+                    <img src="./img/whisky.jpg" alt="Whisky 1L" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Whisky Old Par</p>
+                    <p class="product-price">R$ 89,90</p>
+                    <button class="add-to-cart" data-id="6"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="7">
+                    <img src="./img/baden.png" alt="Cerveja Artesanal 500ml" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Cerveja Artesanal</p>
+                    <p class="product-price">R$ 22,00</p>
+                    <button class="add-to-cart" data-id="7"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="8">
+                    <img src="./img/tequila.jpg" alt="Tequila 750ml" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Tequila Silver</p>
+                    <p class="product-price">R$ 149,00</p>
+                    <button class="add-to-cart" data-id="8"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="9">
+                    <img src="./img/pilsen.jpg" alt="Cerveja Pilsen 600ml" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Cerveja Pilsen</p>
+                    <p class="product-price">R$ 5,50</p>
+                    <button class="add-to-cart" data-id="9"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="10">
+                    <img src="./img/gatorade.webp" alt="Gatorade 500ml" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Gatorade</p>
+                    <p class="product-price">R$ 5,90</p>
+                    <button class="add-to-cart" data-id="10"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="11">
+                    <img src="./img/cereser.jpg" alt="Cerveja Lata 350ml" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Sidra Cereser</p>
+                    <p class="product-price">R$15,00</p>
+                    <button class="add-to-cart" data-id="11"><i class="fas fa-cart-plus"></i></button>
+                </article>
+                <article class="product-card" data-id="12">
+                    <img src="./img/licor.webp" alt="Licor 43 Chocolate" onclick="abrirZoom(this.src)">
+                    <p class="product-name">Licor 43 Chocolate</p>
+                    <p class="product-price">R$ 45,00</p>
+                    <button class="add-to-cart" data-id="12"><i class="fas fa-cart-plus"></i></button>
+            </div>
+        </section>
+
+        <section class="category-chips">
+            <h3 id="category-title">Bora de quê?</h3>
+            <div class="chips-container">
+                <button class="chip" data-category="fermentadas">Fermentadas 🍷</button>
+                <button class="chip" data-category="destiladas">Destiladas 🔥</button>
+                <button class="chip" data-category="licorosas">Licorosas 🍸</button>
+                <button class="chip" data-category="nao-alcoolicas">Não Alcoólicas 🥤</button>
+            </div>
+        </section>
+
+        <section class="main-catalog-grid">
+            <h3 id="catalog-title">Catálogo de Bebidas</h3>
+            <div class="grid-container" id="catalog-results">
+                </div>
+        </section>
+
+        <section class="donation-card">
+            <h2 class="donation-title">SALVE AS TARTARUGAS! 🐢</h2>
+            <p class="donation-text">Doe R$ 10 ou mais e ganhe <span class="highlight">10% de desconto</span>.</p>
+            <a href="./marinho/oceano.html" class="cta-button primary">QUERO DOAR AGORA</a>
+        </section>
+    </main>
+
+    <nav class="bottom-nav" role="navigation">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </a>
+        <a href="./marinho/oceano.html" class="nav-item">
+            <i class="fa-solid fa-heart"></i> 
+            <span>Causa</span>
+        </a>
+        <a href="./carrinho/carrinho.html" class="nav-item">
+            <i class="fa-solid fa-truck"></i>
+            <span>Carrinho</span>
+            <span id="cart-count" class="cart-count-badge">2</span>
+        </a>
+        <a href="./sac/sac.html" class="nav-item">
+            <i class="fas fa-headset"></i>
+            <span>Sac</span>
+        </a>
+        <a href="./login/cadastro.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Seja membro</span>
+        </a>
+    </nav>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 Bora Tomar Uma?</p>
+    </footer>
+
+    <script>
+        // Função de Zoom simples
+        function abrirZoom(src) {
+            const modal = document.getElementById('modal-zoom');
+            const img = document.getElementById('img-zoom');
+            img.src = src;
+            modal.style.display = 'flex';
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
