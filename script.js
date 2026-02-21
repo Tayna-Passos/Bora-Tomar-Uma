@@ -271,3 +271,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
     updateCartCount();
 });
+let scrollAmount = 0;
+function moveCarousel(direction) {
+const container = document.getElementById('mais-vendidos-container');
+const cardWidth = document.querySelector('.product-card').offsetWidth + 20; 
+// Largura e o espaçamento entre eles
+// Para saber o quanto deve mexer
+if (direction === 1) {
+container.scrollLeft += cardWidth;
+} else {
+container.scrollLeft -= cardWidth;
+}
+};

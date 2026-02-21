@@ -107,76 +107,85 @@
     </div>
 
     <main class="content-area" role="main">
-        <section class="product-spotlight dark-background" aria-labelledby="spotlight-title">
-            <h3 id="spotlight-title" class="section-title">Os Mais Vendidos da Galera!</h3>
-            <div class="products-container" id="mais-vendidos-container">
-                <article class="product-card" data-id="1"> 
-                    <img src="./img/itaipava.jpg" alt="Itaipava 600ml" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Cerveja Itaipava</p>
-                    <p class="product-price">R$ 7,50</p>
-                    <button class="add-to-cart" data-id="1"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="2">
-                    <img src="./img/vinho.webp" alt="Vinho Malbec" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Vinho Tinto Malbec</p>
-                    <p class="product-price">R$ 59,90</p>
-                    <button class="add-to-cart" data-id="2"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="3">
-                    <img src="./img/vodkas.webp" alt="Smirnoff 1L" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Vodka Smirnoff</p>
-                    <p class="product-price">R$ 65,00</p>
-                    <button class="add-to-cart" data-id="3"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="4">
-                    <img src="./img/redbull.webp" alt="Red Bull 250ml" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Energético Red Bull</p>
-                    <p class="product-price">R$ 12,00</p>
-                    <button class="add-to-cart" data-id="4"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="6">
-                    <img src="./img/whisky.jpg" alt="Whisky 1L" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Whisky Old Par</p>
-                    <p class="product-price">R$ 89,90</p>
-                    <button class="add-to-cart" data-id="6"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="7">
-                    <img src="./img/baden.png" alt="Cerveja Artesanal 500ml" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Cerveja Artesanal</p>
-                    <p class="product-price">R$ 22,00</p>
-                    <button class="add-to-cart" data-id="7"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="8">
-                    <img src="./img/tequila.jpg" alt="Tequila 750ml" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Tequila Silver</p>
-                    <p class="product-price">R$ 149,00</p>
-                    <button class="add-to-cart" data-id="8"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="9">
-                    <img src="./img/pilsen.jpg" alt="Cerveja Pilsen 600ml" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Cerveja Pilsen</p>
-                    <p class="product-price">R$ 5,50</p>
-                    <button class="add-to-cart" data-id="9"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="10">
-                    <img src="./img/gatorade.webp" alt="Gatorade 500ml" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Gatorade</p>
-                    <p class="product-price">R$ 5,90</p>
-                    <button class="add-to-cart" data-id="10"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="11">
-                    <img src="./img/cereser.jpg" alt="Cerveja Lata 350ml" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Sidra Cereser</p>
-                    <p class="product-price">R$15,00</p>
-                    <button class="add-to-cart" data-id="11"><i class="fas fa-cart-plus"></i></button>
-                </article>
-                <article class="product-card" data-id="12">
-                    <img src="./img/licor.webp" alt="Licor 43 Chocolate" onclick="abrirZoom(this.src)">
-                    <p class="product-name">Licor 43 Chocolate</p>
-                    <p class="product-price">R$ 45,00</p>
-                    <button class="add-to-cart" data-id="12"><i class="fas fa-cart-plus"></i></button>
-            </div>
-        </section>
+       <section class="product-spotlight dark-background" aria-labelledby="spotlight-title">
+<h3 id="spotlight-title" class="section-title">Os Mais Vendidos da Galera!</h3>
+<div class="carousel-window">
+<button class="carousel-btn prev" onclick="moveCarousel(-1)">&#10094;</button>
+<div class="products-container" id="mais-vendidos-container">
+<article class="product-card" data-id="1">
+<img src="./img/itaipava.jpg" alt="Itaipava 600ml" onclick="abrirZoom(this.src)">
+<p class="product-name">Cerveja Itaipava</p>
+<p class="product-price">R$ 7,50</p>
+<button class="add-to-cart" data-id="1"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="2">
+<img src="./img/vinho.webp" alt="Vinho Malbec" onclick="abrirZoom(this.src)">
+<p class="product-name">Vinho Tinto Malbec</p>
+<p class="product-price">R$ 59,90</p>
+<button class="add-to-cart" data-id="2"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="3">
+<img src="./img/vodkas.webp" alt="Smirnoff 1L" onclick="abrirZoom(this.src)">
+<p class="product-name">Vodka Smirnoff</p>
+<p class="product-price">R$ 65,00</p>
+<button class="add-to-cart" data-id="3"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="4">
+<img src="./img/redbull.webp" alt="Red Bull 250ml" onclick="abrirZoom(this.src)">
+<p class="product-name">Energético Red Bull</p>
+<p class="product-price">R$ 12,00</p>
+<button class="add-to-cart" data-id="4"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="6">
+<img src="./img/whisky.jpg" alt="Whisky 1L" onclick="abrirZoom(this.src)">
+<p class="product-name">Whisky Old Par</p>
+<p class="product-price">R$ 89,90</p>
+<button class="add-to-cart" data-id="6"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="7">
+<img src="./img/baden.png" alt="Cerveja Artesanal 500ml"
+onclick="abrirZoom(this.src)">
+<p class="product-name">Cerveja Artesanal</p>
+<p class="product-price">R$ 22,00</p>
+<button class="add-to-cart" data-id="7"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="8">
+<img src="./img/tequila.jpg" alt="Tequila 750ml" onclick="abrirZoom(this.src)">
+<p class="product-name">Tequila Silver</p>
+<p class="product-price">R$ 149,00</p>
+<button class="add-to-cart" data-id="8"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="9">
+<img src="./img/pilsen.jpg" alt="Cerveja Pilsen 600ml"
+onclick="abrirZoom(this.src)">
+<p class="product-name">Cerveja Pilsen</p>
+<p class="product-price">R$ 5,50</p>
+<button class="add-to-cart" data-id="9"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="10">
+<img src="./img/gatorade.webp" alt="Gatorade 500ml"
+onclick="abrirZoom(this.src)">
+<p class="product-name">Gatorade</p>
+<p class="product-price">R$ 5,90</p>
+<button class="add-to-cart" data-id="10"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="11">
+<img src="./img/cereser.jpg" alt="Cerveja Lata 350ml"
+onclick="abrirZoom(this.src)">
+<p class="product-name">Sidra Cereser</p>
+<p class="product-price">R$15,00</p>
+<button class="add-to-cart" data-id="11"><i class="fas fa-cart-plus"></i></button>
+</article>
+<article class="product-card" data-id="12">
+<img src="./img/licor.webp" alt="Licor 43 Chocolate" onclick="abrirZoom(this.src)">
+<p class="product-name">Licor 43 Chocolate</p>
+<p class="product-price">R$ 45,00</p>
+<button class="add-to-cart" data-id="12"><i class="fas fa-cart-plus"></i></button>
+</article>
+</div>
+<button class="carousel-btn next" onclick="moveCarousel(1)">&#10095;</button>
+</div>
+</section>
 
         <section class="category-chips">
             <h3 id="category-title">Bora de quê?</h3>

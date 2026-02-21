@@ -180,3 +180,43 @@ body {
     background: var(--color-primary); color: var(--color-text-dark);
     text-decoration: none; font-weight: bold; border-radius: 8px;
 }
+.carousel-window {
+position: relative;
+display: flex;
+align-items: center;
+width: 100%;
+max-width: 1150px;
+margin: 0 auto;
+}
+#mais-vendidos-container {
+display: flex;
+overflow: hidden;
+scroll-behavior: smooth;
+gap: 20px;
+padding: 40px 0;
+width: 100%;
+}
+/*Só para os cards não ficarem esmagados*/
+.product-card {
+min-width: 220px;
+flex-shrink: 0;
+}
+/*Os botões*/
+.carousel-btn {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background: #ff8e32;
+color: white;
+border: solid rgb(192, 81, 17);
+width: 45px;
+height: 45px;
+border-radius: 50%;
+cursor: pointer;
+z-index: 10;
+font-size: 25px;
+transition: 0.3s;
+}
+.carousel-btn:hover { background: #f16532; }
+.prev { left: -50px; }
+.next { right: -50px; }
