@@ -221,3 +221,67 @@ transition: 0.3s;
 .carousel-btn:hover { background: #f16532; }
 .prev { left: -50px; }
 .next { right: -50px; }
+/* ==========================================================
+   AJUSTES EXCLUSIVOS PARA CELULAR (Mobile Only)
+   Essas regras só funcionam em telas de até 768px.
+   ========================================================== */
+@media (max-width: 768px) {
+    
+    /* 1. Ajuste do Carrossel (Mais Vendidos) */
+    .products-container .product-card {
+        flex: 0 0 160px; /* Define um tamanho fixo menor para os itens do carrossel lateral */
+        min-width: 160px !important;
+    }
+
+    /* 2. Ajuste da Grade Principal (Catálogo) */
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Garante 2 colunas */
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .grid-container .product-card {
+        min-width: 0 !important; /* Remove o min-width de 220px do desktop */
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* 3. Correção das Imagens (Garrafas e Latas) */
+    .product-card img {
+        height: 100px; /* Reduz a altura para caber melhor no card */
+        width: 100%;
+        object-fit: contain; /* Garante que a garrafa apareça inteira */
+        background-color: white; /* Cria o fundo branco que aparece no seu design */
+        border-radius: 8px;
+    }
+
+    /* 4. Ajuste de Textos e Botões */
+    .product-name {
+        font-size: 0.75rem; /* Fonte um pouco menor para nomes longos */
+        min-height: 3.2em;
+    }
+
+    .product-price {
+        font-size: 0.9rem;
+    }
+
+    .add-to-cart {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* 5. Esconder botões de seta do carrossel no celular (usa-se o dedo/scroll) */
+    .carousel-btn {
+        display: none !important;
+    }
+
+    /* 6. Ajuste do Card de Doação */
+    .donation-card {
+        margin: 15px;
+        padding: 15px;
+    }
+    
+    .donation-card h2 {
+        font-size: 1.2rem;
+    }
+}
