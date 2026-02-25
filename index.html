@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bora Tomar Uma?</title> 
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="./img/bebida-gelada.gif">
     
@@ -71,6 +70,308 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
         .product-card img { cursor: zoom-in; }
+      :root {
+    --color-background: #252525;
+    --color-primary: #e48f4f;
+    --color-secondary: #e9e9e9;
+    --color-text-light: #e9e9e9;
+    --color-text-dark: #252525;
+    --color-card-dark: #1a1a1a;
+    --spacing-small: 10px;
+    --spacing-medium: 15px;
+    --spacing-large: 20px;
+    --border-radius: 12px;
+}
+
+/* --- RESET E GERAL --- */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body { 
+    font-family: sans-serif; 
+    background-color: var(--color-background); 
+    color: white; 
+    padding-top: 70px; 
+    padding-bottom: 90px;
+    overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+.app-header {
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+    height: 60px;
+    background: var(--color-background); 
+    z-index: 100;
+    display: flex; 
+    align-items: center; 
+    padding: 0 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+.header-content { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+.logo { font-size: 1.1rem; color: var(--color-primary); }
+.icon-button { background: none; border: none; color: var(--color-primary); font-size: 1.2rem; margin-left: 10px; cursor: pointer; }
+
+/* --- NOTIFICAÇÃO (TOAST) --- */
+.cart-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px); /* Escondida no topo */
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    z-index: 9999; /* Acima de tudo */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.cart-notification.show {
+    transform: translateX(-50%) translateY(60px); /* Desce para ficar visível abaixo do header */
+}
+
+/* --- MAIS VENDIDOS (SCROLL LATERAL) --- */
+.products-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 15px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+.products-container::-webkit-scrollbar { display: none; }
+
+.products-container .product-card {
+    flex: 0 0 150px;
+    background: var(--color-secondary);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    color: var(--color-text-dark);
+    text-align: center;
+}
+
+/* --- GRADE DO CATÁLOGO (CORRIGIDA) --- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas iguais */
+    gap: 15px;
+    padding: 15px;
+}
+
+.grid-container .product-card {
+    background: var(--color-card-dark);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+}
+
+/* --- ESTILO DAS IMAGENS --- */
+.product-card img {
+    width: 100%;
+    height: 110px; 
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* --- ESTILO DOS NOMES E PREÇOS --- */
+.product-name {
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    min-height: 2.6em; /* Mantém alinhamento mesmo com nomes curtos */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+}
+
+.product-price {
+    color: var(--color-primary);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* --- BOTÃO ADICIONAR --- */
+.add-to-cart {
+    background: var(--color-primary);
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: var(--color-text-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- CATEGORIAS (CHIPS) --- */
+.category-chips { padding: 0 15px; }
+.chips-container {
+    display: flex; gap: 8px; overflow-x: auto; padding: 10px 0;
+}
+.chips-container::-webkit-scrollbar { display: none; }
+.chip {
+    flex-shrink: 0; padding: 8px 15px; border-radius: 20px;
+    border: 1px solid var(--color-primary); background: none; color: white;
+}
+.chip.active { background: var(--color-primary); color: var(--color-text-dark); }
+
+/* --- NAV INFERIOR --- */
+.bottom-nav {
+    position: fixed; bottom: 0; width: 100%; height: 70px;
+    background: #1a1a1a; display: flex; justify-content: space-around;
+    align-items: center; border-top: 1px solid #333; z-index: 100;
+}
+.nav-item { text-decoration: none; color: white; font-size: 0.7rem; text-align: center; opacity: 0.8; }
+.nav-item i { display: block; font-size: 1.3rem; margin-bottom: 4px; }
+.nav-item.active { color: var(--color-primary); opacity: 1; }
+
+/* --- DOAÇÃO --- */
+.donation-card {
+    margin: 20px; padding: 25px; background: var(--color-card-dark);
+    border-radius: var(--border-radius); text-align: center;
+}
+.cta-button {
+    display: inline-block; margin-top: 15px; padding: 12px 20px;
+    background: var(--color-primary); color: var(--color-text-dark);
+    text-decoration: none; font-weight: bold; border-radius: 8px;
+}
+.carousel-window {
+position: relative;
+display: flex;
+align-items: center;
+width: 100%;
+max-width: 1150px;
+margin: 0 auto;
+}
+#mais-vendidos-container {
+display: flex;
+overflow: hidden;
+scroll-behavior: smooth;
+gap: 20px;
+padding: 40px 0;
+width: 100%;
+}
+/*Só para os cards não ficarem esmagados*/
+.product-card {
+min-width: 220px;
+flex-shrink: 0;
+}
+/*Os botões*/
+.carousel-btn {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background: #ff8e32;
+color: white;
+border: solid rgb(192, 81, 17);
+width: 45px;
+height: 45px;
+border-radius: 50%;
+cursor: pointer;
+z-index: 10;
+font-size: 25px;
+transition: 0.3s;
+}
+.carousel-btn:hover { background: #f16532; }
+.prev { left: -50px; }
+.next { right: -50px; }
+/* ==========================================================
+   AJUSTES EXCLUSIVOS PARA CELULAR (Mobile Only)
+   Essas regras só funcionam em telas de até 768px.
+   ========================================================== */
+@media (max-width: 768px) {
+    
+    /* 1. Ajuste do Carrossel (Mais Vendidos) */
+    .products-container .product-card {
+        flex: 0 0 160px; /* Define um tamanho fixo menor para os itens do carrossel lateral */
+        min-width: 160px !important;
+    }
+
+    /* 2. Ajuste da Grade Principal (Catálogo) */
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* Garante 2 colunas */
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .grid-container .product-card {
+        min-width: 0 !important; /* Remove o min-width de 220px do desktop */
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* 3. Correção das Imagens (Garrafas e Latas) */
+    .product-card img {
+        height: 100px; /* Reduz a altura para caber melhor no card */
+        width: 100%;
+        object-fit: contain; /* Garante que a garrafa apareça inteira */
+        background-color: white; /* Cria o fundo branco que aparece no seu design */
+        border-radius: 8px;
+    }
+
+    /* 4. Ajuste de Textos e Botões */
+    .product-name {
+        font-size: 0.75rem; /* Fonte um pouco menor para nomes longos */
+        min-height: 3.2em;
+    }
+
+    .product-price {
+        font-size: 0.9rem;
+    }
+
+    .add-to-cart {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* 5. Esconder botões de seta do carrossel no celular (usa-se o dedo/scroll) */
+    .carousel-btn {
+        display: none !important;
+    }
+
+    /* 6. Ajuste do Card de Doação */
+    .donation-card {
+        margin: 15px;
+        padding: 15px;
+    }
+    
+    .donation-card h2 {
+        font-size: 1.2rem;
+    }
+}
+#mais-vendidos-container {
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 20px 10px;
+    }
+
+    #mais-vendidos-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    #mais-vendidos-container .product-card {
+        scroll-snap-align: start;
+    }
+  
     </style>
 </head>
 <body>
@@ -137,29 +438,29 @@
 <button class="add-to-cart" data-id="4"><i class="fas fa-cart-plus"></i></button>
 </article>
 <article class="product-card" data-id="6">
-<img src="./img/whisky.jpg" alt="Whisky 1L" onclick="abrirZoom(this.src)">
-<p class="product-name">Whisky Old Par</p>
+<img src="./img/whisky.webp" alt="Whisky 1L" onclick="abrirZoom(this.src)">
+<p class="product-name">Whisky Ballantines Finest</p>
 <p class="product-price">R$ 89,90</p>
 <button class="add-to-cart" data-id="6"><i class="fas fa-cart-plus"></i></button>
 </article>
 <article class="product-card" data-id="7">
 <img src="./img/baden.png" alt="Cerveja Artesanal 500ml"
 onclick="abrirZoom(this.src)">
-<p class="product-name">Cerveja Artesanal</p>
+<p class="product-name">Cerveja Artesanal Baden</p>
 <p class="product-price">R$ 22,00</p>
 <button class="add-to-cart" data-id="7"><i class="fas fa-cart-plus"></i></button>
 </article>
 <article class="product-card" data-id="8">
-<img src="./img/tequila.jpg" alt="Tequila 750ml" onclick="abrirZoom(this.src)">
-<p class="product-name">Tequila Silver</p>
-<p class="product-price">R$ 149,00</p>
+<img src="./img/tequilao.webp" alt="Tequila Jose Cuervo Ouro" onclick="abrirZoom(this.src)">
+<p class="product-name">Tequila Jose Cuervo Ouro</p>
+<p class="product-price">R$ 120,00</p>
 <button class="add-to-cart" data-id="8"><i class="fas fa-cart-plus"></i></button>
 </article>
 <article class="product-card" data-id="9">
-<img src="./img/pilsen.jpg" alt="Cerveja Pilsen 600ml"
+<img src="./img/gint.avif" alt="Gin Tônica 269ml"
 onclick="abrirZoom(this.src)">
-<p class="product-name">Cerveja Pilsen</p>
-<p class="product-price">R$ 5,50</p>
+<p class="product-name">Gin Tônica Ready-to-Drink</p>
+<p class="product-price">R$ 18,00</p>
 <button class="add-to-cart" data-id="9"><i class="fas fa-cart-plus"></i></button>
 </article>
 <article class="product-card" data-id="10">
@@ -190,6 +491,7 @@ onclick="abrirZoom(this.src)">
         <section class="category-chips">
             <h3 id="category-title">Bora de quê?</h3>
             <div class="chips-container">
+                <button class="chip active" data-category="todos">Todas 🍺</button>
                 <button class="chip" data-category="fermentadas">Fermentadas 🍷</button>
                 <button class="chip" data-category="destiladas">Destiladas 🔥</button>
                 <button class="chip" data-category="licorosas">Licorosas 🍸</button>
@@ -246,7 +548,337 @@ onclick="abrirZoom(this.src)">
             img.src = src;
             modal.style.display = 'flex';
         }
+        // =======================================================
+// DADOS E PROCESSAMENTO DO CATÁLOGO
+// =======================================================
+
+let nextProductId = 100;
+
+function processCatalogData(data) {
+    const unifiedList = [];
+    for (const key in data) {
+        data[key].products.forEach(product => {
+            if (!product.id) {
+                product.id = nextProductId++;
+            }
+            product.categoryKey = key;
+            unifiedList.push(product);
+        });
+    }
+    return unifiedList;
+}
+
+const originalCatalogData = {
+    fermentadas: {
+        title: "Fermentadas: Cervejas, Vinhos e Mais",
+        products: [
+            { name: "Cerveja Itaipava 600ml", price: 7.50, img: "img/itaipava.jpg" },
+            { name: "Vinho Tinto Malbec 750ml", price: 59.90, img: "img/vinho.webp" },
+            { name: "Sidra Cereser 660ml", price: 15.00, img: "img/cereser.jpg" },
+            { name: "Cerveja Artesanal Baden 600ml", price: 22.00, img: "img/baden.png" },
+            { name: "Cerveja Pilsen Lata 350ml", price: 5.50, img: "img/pilsen.webp" },
+            { name: "Vinho Tinto Bordô Suave Góes 750ml", price: 29.90, img: "img/goes.jpg" },
+            { name: "Concha y Toro Casillero Del Diablo Cabernet Sauvignon 750ml", price: 38.00, img: "img/concha.jpg" },
+            { name: "Cerveja Corona 330ml", price: 6.79, img: "img/corona.webp" },
+            { name: "Vinho Tinto Suave Pérgola 1L", price: 23.07, img: "img/pergola.jpg" },
+            { name: "Sidra Bfiver 750ml", price: 96.00, img: "img/bfiver.webp" },
+            { name: "Vinho Tinto Gato Negro Cabernet Sauvignon 750 Ml", price: 41.21, img: "img/gato.webp" },
+            { name: "Cerveja Heineken Long Neck 330ml", price: 6.49, img: "img/heineken.webp" },
+            { name: "Cerveja Spaten 600ml", price: 8.90, img: "img/spaten.webp" },
+            { name: "Vinho Rosé Piscine 750ml", price: 95.00, img: "img/rose.webp" },
+            { name: "Espumante Chandon Passion 750ml", price: 89.90, img: "img/chandon.jpg" },
+            { name: "Cerveja Skol 600ml", price: 7.90, img: "img/skol.jpg" },
+            { name: "Cerveja Brahma 600ml", price: 7.50, img: "img/brahma.jpg" },
+            { name: "Vinho Goes Tinto Suave 750ml", price: 29.90, img: "img/goest.webp" },
+            { name: "Espumante Veuve Clicquot 750ml", price: 120.00, img: "img/veuve.jpg" },
+            { name: "Cerveja Antarctica 600ml", price: 7.50, img: "img/antarctica.jpg" }
+        ]
+    },
+    destiladas: {
+        title: "Destiladas: Fogo, Força e Sabor",
+        products: [
+            { name: "Cachaça Prata Seleta 1L", price: 25.00, img: "img/cachaca.webp" },
+            { name: "Whisky Ballantines Finest 8 anos 1 Litro", price: 89.90, img: "img/whisky.webp" },
+            { name: "Gin Tônica Ready-to-Drink 269ml", price: 18.00, img: "img/gint.avif" },
+            { name: "Tequila Jose Cuervo Ouro 750ml", price: 120.00, img: "img/tequilao.webp" },
+            { name: "Vodka Smirnoff 1L", price: 65.00, img: "img/vodkas.webp" },
+            { name: "Rum Bacardi", price: 55.00, img: "img/rum.jpg" },
+            { name: "White Horse Whisky 1L", price: 69.90, img: "img/white.webp" },
+            { name: "Absolut Vodka 750Ml", price: 72.90, img: "img/absolut.jpg" },
+            { name: "Gin Tanqueray London Dry, 750ml", price: 99.97, img: "img/london.png" },
+            { name: "Vodka Natasha 900ml", price: 21.99, img: "img/natasha.webp" },
+            { name: "Cachaça Velho Barreiro 910ml", price: 14.99, img: "img/velho.webp" },
+            { name: "Whisky Johnnie Walker Black Label 1L", price: 159.90, img: "img/johnnie.webp" },
+            { name: "Gin Bombay Sapphire 750ml", price: 105.00, img: "img/bombay.jpg" },
+            { name: "Cachaça Cabaré Extra Premium 700ml", price: 180.00, img: "img/cabare.webp" },
+            { name: "Vodka Grey Goose 750ml", price: 135.00, img: "img/grey.webp" },
+            { name: "Rum Havana Club Añejo 7 Años 750ml", price: 120.00, img: "img/havana.avif" },
+            { name: "Whisky Chivas Regal 12 Anos 1L", price: 149.90, img: "img/chivas.jpg" },
+            { name: "Gin Hendrick's 750ml", price: 110.00, img: "img/ginh.webp" },
+            { name: "Cachaça Ypióca Ouro 1L", price: 28.00, img: "img/ypioca.webp" },
+            { name: "Vodka Absolut Elyx 750ml", price: 150.00, img: "img/elyx.jpg" }
+        ]
+    },
+    licorosas: {
+        title: "Licorosas: Doces e Aromáticas",
+        products: [
+            { name: "Licor 43 Chocolate 700ml", price: 45.00, img: "img/licor.webp" },
+            { name: "Vermute Tinto Martini 750ml", price: 32.50, img: "img/vermute.jpg" },
+            { name: "Aperitivo Amargo Campari 900ml", price: 55.00, img: "img/aperitivo.webp" },
+            { name: "Licor de Café e Creme de Baunilha Sheridan's Irlandês 700ml", price: 160.00, img: "img/cafe.webp" },
+            { name: "Ballena Licor Morango com Tequila 750ml", price: 115.71, img: "img/ballena.jpg" },
+            { name: "Aperitivo Aperol 750ml", price: 59.90, img: "img/aperol.jpg" },
+            { name: "Amarula Licor 750ml", price: 65.00, img: "img/amarula.jpg " },
+            { name: "Licor de Chocolate Stock 720ml", price: 42.70, img: "img/stock.webp" },
+            { name: "Aperitivo De Ervas Schluck 750ml", price: 99.90, img: "img/ervas.avif" },
+            { name: "Vermute Dry Schluck 700ml", price: 95.00, img: "img/vermuted.webp" },
+            { name: "Licor Tia Maria 700ml", price: 144.90, img: "img/maria.webp" },
+            { name: "Licor Cointreau 700ml", price: 125.00, img: "img/licorc.webp " },
+            { name: "Licor Amarula Raspeberry Chocolate e Baobab 750ml", price: 54.90, img: "img/amarulac.webp" },
+            { name: "Licor de Doce de Leite Don Luiz 750ml", price: 89.00, img: "img/don.webp" },
+            { name: "Vinho do Porto Ferreira Tawny 750ml", price: 79.90, img: "img/ferreira.jpg " },
+            { name: "Licor de Maracujá Casa Petro - 500ml", price: 120.00, img: "img/maracuja.jpg" },
+            { name: "Licor de Amêndoas Amaretto Disaronno 750ml", price: 110.00, img: "img/disa.webp" },
+            { name: "Licor de Chocolate e Café Kahlúa 750ml", price: 130.00, img: " img/cafel.webp" },
+            { name: "Licor de Frutas Vermelhas e Vodka Smirnoff 700ml", price: 105.00, img: " img/frutas.jpg" },
+            { name: "Licor de Laranja e Gin Tanqueray 750ml", price: 105.00, img: "img/laranja.jpg" }
+        ]
+    },
+    'nao-alcoolicas': {
+        title: "Não Alcoólicas: Hidratação e Energia",
+        products: [
+            { name: "Red Bull Energy Drink 250ml", price: 12.00, img: "img/redbull.webp" },
+            { name: "Suco Natural Laranja 1,5L", price: 10.00, img: "img/suco.webp" },
+            { name: "Água Mineral com Gás Crystal 500ml", price: 3.50, img: "img/agua.webp" },
+            { name: "Gatorade Isotônico 500ml", price: 5.90, img: "img/gatorade.webp" },
+            { name: "Energético Zero Monster 473ml", price: 8.99, img: "img/monsterzero.webp" },
+            { name: "Isotônico Frutas Tropicais Powerade 500ml", price: 4.30, img: "img/poweradetropicais.webp" },
+            { name: "Del Valle Suco Uva 1L", price: 11.50, img: "img/delvalleuva.webp" },
+            { name: "Energético Baly Melancia", price: 6.00, img: "img/energeticobalymelancia.webp" },
+            { name: "Ducoco Água de Coco 200ml", price: 2.65, img: "img/ducocoaguacoco.webp" },
+            { name: "Água Mineral Sem Gás Minalba 510ml", price: 2.19, img: "img/minalbanatural.webp" },
+            { name: "Energético Reign Melon 473ml", price: 8.95, img: "img/reignmelon.webp" },
+            { name: "Refrigerante Coca-Cola Original 2L", price: 9.50, img: "img/cocacola.png" },
+            { name: "Água de Coco Obrigado 1L", price: 12.90, img: "img/aguacocoobrigado.webp" },
+            { name: "H2OH! Limão 500ml", price: 4.50, img: "img/h2olimao.webp" },
+            { name: "Suco Prats Laranja 900ml", price: 14.00, img: "img/pratslaranja.webp" },
+            { name: "Energetico Monster Ultra 473ml", price: 9.99, img: "img/monsterultra.jpg" },
+            { name: "Isotônico Gatorade Laranja 500ml", price: 5.50, img: "img/gatoradelaranja.webp" },
+            { name: "Água Mineral com Gás Perrier 750ml", price: 7.90, img: "img/perrieragua.webp" },
+            { name: "Ice Tea Leão, Limão 500ml", price: 12.00, img: "img/chagelado.webp" },
+            { name: "Nescau 270g", price: 10.00, img: "img/nescau.jpg" }
+        ]
+    }
+};
+
+let ALL_PRODUCTS = [];
+let PRODUCT_MAP = {};
+
+function getStaticProductsFromHTML() {
+    const staticProducts = [];
+    const container = document.getElementById('mais-vendidos-container');
+    if(!container) return [];
+
+    const cards = container.querySelectorAll('.product-card');
+    cards.forEach(card => {
+        staticProducts.push({
+            id: parseInt(card.getAttribute('data-id')),
+            name: card.querySelector('.product-name').innerText,
+            price: parseFloat(card.querySelector('.product-price').innerText.replace('R$', '').replace(',', '.').trim()),
+            img: card.querySelector('img').getAttribute('src'),
+            categoryKey: 'mais-vendidos'
+        });
+    });
+    return staticProducts;
+}
+
+// =======================================================
+// CARROSSEL E ZOOM
+// =======================================================
+
+function moveCarousel(direction) {
+    const container = document.getElementById('mais-vendidos-container');
+    const firstCard = container.querySelector('.product-card');
+    if (!container || !firstCard) return;
+
+    const scrollStep = firstCard.offsetWidth + 20; 
+    container.scrollBy({ left: direction * scrollStep, behavior: 'smooth' });
+}
+
+function abrirZoom(src) {
+    const modal = document.getElementById('modal-zoom');
+    const imgModal = document.getElementById('img-zoom');
+    if (modal && imgModal) {
+        imgModal.src = src;
+        modal.style.display = 'flex';
+    }
+}
+
+// =======================================================
+// CARRINHO
+// =======================================================
+
+let cart = JSON.parse(localStorage.getItem('userCart')) || {};
+
+function saveCart() { localStorage.setItem('userCart', JSON.stringify(cart)); }
+
+function updateCartCount() {
+    const countElement = document.getElementById("cart-count");
+    if (countElement) {
+        const total = Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+        countElement.innerText = total;
+    }
+}
+
+function showCartToast() {
+    const toast = document.getElementById('cart-toast');
+    if (toast) {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000); 
+    }
+}
+
+function addToCart(productId, qty = 1) {
+    let product = PRODUCT_MAP[productId];
+
+    if (!product) {
+        const cardInHtml = document.querySelector(`.product-card[data-id="${productId}"]`);
+        if (cardInHtml) {
+            product = {
+                id: productId,
+                name: cardInHtml.querySelector('.product-name').innerText,
+                img: cardInHtml.querySelector('img').getAttribute('src'), 
+                price: parseFloat(cardInHtml.querySelector('.product-price').innerText.replace('R$', '').replace(',', '.').trim())
+            };
+        }
+    }
+
+    if (!product) return;
+
+    if (cart[productId]) {
+        cart[productId].qty += qty;
+    } else {
+        cart[productId] = { ...product, qty: qty };
+    }
+    
+    saveCart();
+    updateCartCount();
+    showCartToast();
+}
+
+// =======================================================
+// BUSCA E RENDERIZAÇÃO
+// =======================================================
+
+function createProductCard(product) {
+    return `
+        <article class="product-card" data-id="${product.id}">
+            <img src="${product.img.startsWith('img/') ? './' + product.img : product.img}" alt="${product.name}" onclick="abrirZoom(this.src)" style="cursor: zoom-in;">
+            <p class="product-name">${product.name}</p>
+            <div class="product-details-bottom">
+                <p class="product-price">R$ ${product.price.toFixed(2).replace('.', ',')}</p>
+                <button class="add-to-cart" data-id="${product.id}"><i class="fas fa-cart-plus"></i></button>
+            </div>
+        </article>`;
+}
+
+function attachCartEvents() {
+    document.querySelectorAll(".add-to-cart").forEach(button => {
+        button.onclick = (e) => {
+            e.preventDefault();
+            const id = parseInt(button.getAttribute("data-id"));
+            if (!isNaN(id)) addToCart(id);
+        };
+    });
+}
+function renderCatalog(category) {
+    const grid = document.getElementById("catalog-results");
+    const catalogTitle = document.getElementById("catalog-title");
+    if (!grid) return;
+
+    if (category === "todos") {
+        catalogTitle.innerText = "Catálogo de Bebidas"; // Título Geral
+        grid.innerHTML = ALL_PRODUCTS.map(p => createProductCard(p)).join("");
+    } else {
+        const data = originalCatalogData[category];
+        if (!data) return;
+        catalogTitle.innerText = data.title; // Título da Categoria (ex: Fermentadas...)
+        grid.innerHTML = data.products.map(p => {
+            const product = PRODUCT_MAP[p.id] || p;
+            return createProductCard(product);
+        }).join("");
+    }
+    attachCartEvents();
+}
+
+function renderSearchResults(query) {
+    const grid = document.getElementById("catalog-results");
+    const catalogTitle = document.getElementById("catalog-title");
+    if (!grid) return;
+
+    const term = query.toLowerCase().trim();
+    if (term === "") {
+        const activeChip = document.querySelector('.chip.active');
+        renderCatalog(activeChip ? activeChip.dataset.category : "fermentadas");
+        return;
+    }
+
+    const filtered = ALL_PRODUCTS.filter(p => p.name.toLowerCase().includes(term));
+    catalogTitle.innerText = `Resultados para: "${query}"`;
+    grid.innerHTML = filtered.length === 0 ? "<p>Nenhum produto encontrado.</p>" : filtered.map(p => createProductCard(p)).join("");
+    attachCartEvents();
+}
+
+function attachSearchToggleEvents() {
+    const searchIcon = document.getElementById('search-icon');
+    const searchBar = document.getElementById('search-bar');
+    const closeSearch = document.getElementById('close-search');
+    const searchInput = document.querySelector('.search-input');
+
+    if (!searchIcon || !searchBar || !searchInput) return;
+
+    searchIcon.addEventListener('click', () => {
+        searchBar.classList.add('active');
+        searchInput.focus();
+    });
+
+    closeSearch.addEventListener('click', () => {
+        searchBar.classList.remove('active');
+        searchInput.value = '';
+        renderCatalog("fermentadas");
+    });
+
+    searchInput.addEventListener('input', (e) => renderSearchResults(e.target.value));
+}
+
+// =======================================================
+// INICIALIZAÇÃO
+// =======================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Unifica dados
+    const catalogProducts = processCatalogData(originalCatalogData);
+    const staticItems = getStaticProductsFromHTML();
+    ALL_PRODUCTS = [...staticItems, ...catalogProducts];
+    
+    PRODUCT_MAP = ALL_PRODUCTS.reduce((acc, p) => { acc[p.id] = p; return acc; }, {});
+
+    // 2. Eventos de busca e categorias
+    attachSearchToggleEvents();
+    
+    document.querySelectorAll(".chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+            document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+            chip.classList.add("active");
+            document.querySelector('.search-input').value = '';
+            renderCatalog(chip.dataset.category);
+        });
+    });
+
+    renderCatalog("todos");
+    attachCartEvents();
+    updateCartCount();
+});
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
