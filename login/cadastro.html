@@ -170,16 +170,42 @@
             background: rgba(255, 255, 255, 0.05);
             border-color: #666;
         }
+
+        .botao-seta {
+    background-color: #FF8C00;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px; /* Estilo 'pílula' mais moderno */
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: 900px;
+  }
+
+  /* Efeito de movimento na seta ao passar o mouse */
+  .botao-seta:hover {
+    background-color: #d47705;
+    padding-right: 40px; /* O botão estica levemente */
+  }
     </style>
 </head>
 <body>
-
     <div class="glass-card">
+        <a href="../index.html" class="link-botao">
+        <button class="botao-seta">
+            <span>&#11013;</span> Voltar
+        </button>
+    </a>
         <div class="logo-box">
             <i class="fas fa-beer-mug-empty"></i>
             <div class="online-dot"></div>
         </div>
-
         <h2>Criar conta</h2>
         <p class="subtitle">Junte-se à nossa comunidade cervejeira.</p>
 
