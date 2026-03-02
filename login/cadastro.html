@@ -193,6 +193,42 @@
     background-color: #d47705;
     padding-right: 20px; /* O botão estica levemente */
   }
+  /* Ajustes para Mobile - Cadastro */
+@media (max-width: 768px) {
+    /* Impede o movimento lateral da página */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        height: auto; /* Permite rolar para baixo se o teclado subir */
+        min-height: 100vh;
+    }
+
+    /* Ajusta o card de vidro para não colar nas bordas */
+    .glass-card {
+        width: 90%;
+        padding: 25px;
+        margin: 20px auto;
+        border-radius: 25px; /* Bordas um pouco menores para telas pequenas */
+    }
+
+    /* O VILÃO: Ajustando a margem da seta que estava em 900px */
+    .botao-seta {
+        margin-right: 0 !important;
+        margin-bottom: 20px;
+        width: auto;
+        display: inline-flex;
+    }
+
+    /* Garante que o container da seta não empurre o layout */
+    .link-botao {
+        display: block;
+        text-align: left; /* Alinha o botão de voltar à esquerda no card */
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
     </style>
 </head>
 <body>
