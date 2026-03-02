@@ -9,7 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../img/bebida-gelada.gif">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            /* Removemos o overflow-hidden daqui para permitir o scroll */
+            overflow-x: hidden; 
+        }
         
         .background-overlay {
             position: fixed;
@@ -39,27 +43,65 @@
         }
 
         .botao-seta {
-    background-color: #FF8C00;
-    color: white;
-    padding: 15px 15px;
-    border: none;
-    border-radius: 50px; /* Estilo 'pílula' mais moderno */
-    font-size: 15px;
-    font-family: sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin-right: 900px;
-  }
+            background-color: #FF8C00;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            /* No Desktop ela tem uma margem, mas vamos domar isso no mobile */
+            margin-right: 900px; 
+        }
 
-  /* Efeito de movimento na seta ao passar o mouse */
-  .botao-seta:hover {
-    background-color: #d47705;
-    padding-right: 18px; /* O botão estica levemente */
-  }
+        .botao-seta:hover {
+            background-color: #d47705;
+            padding-right: 22px;
+        }
+
+        /* --- AJUSTES EXCLUSIVOS MOBILE --- */
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden !important;
+                overflow-y: auto !important; /* Libera o scroll vertical */
+                height: auto !important;
+                min-height: 100vh;
+                display: block !important; /* Melhora o scroll em telas pequenas */
+            }
+
+            body {
+                padding: 20px 10px !important;
+            }
+
+            main {
+                max-width: 100% !important;
+                margin: 0 auto !important;
+                display: flex;
+                justify-content: center;
+            }
+
+            .glass-card {
+                width: 100% !important;
+                padding: 1.5rem !important;
+                border-radius: 2rem !important;
+                margin-top: 10px;
+            }
+
+            .botao-seta {
+                margin-right: 0 !important; /* Mata o erro da tela andando */
+                margin-bottom: 20px !important;
+                width: auto !important;
+            }
+
+            header h1 {
+                font-size: 1.5rem !important;
+            }
+        }
     </style>
 
     <script>
@@ -75,17 +117,19 @@
         }
     </script>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 overflow-hidden text-gray-100">
+<body class="min-h-screen flex items-center justify-center p-4 text-gray-100">
 
     <div class="background-overlay"></div>
 
     <main class="max-w-[400px] w-full animate-in fade-in zoom-in duration-500"> 
         <div class="glass-card p-8 rounded-[2.5rem] shadow-2xl"> 
-        <a href="../index.html" class="link-botao">
-        <button class="botao-seta">
-            <span>&#11013;</span> Voltar
-        </button>
-    </a>
+            
+            <a href="../index.html" class="link-botao">
+                <button class="botao-seta">
+                    <span>&#11013;</span> Voltar
+                </button>
+            </a>
+
             <div class="flex justify-center mb-8">
                 <div class="relative">
                     <div class="w-20 h-20 rounded-2xl bg-kivy-primary flex items-center justify-center text-kivy-dark shadow-[0_0_20px_rgba(228,143,79,0.3)] rotate-3">
@@ -122,12 +166,13 @@
                     Entrar
                 </button>
             </form>
+
             <div class="mt-8 text-center border-t border-white/10 pt-6">
-    <p class="text-gray-400 text-sm mb-4">Novo por aqui?</p>
-    <a href="cadastro.html" class="inline-block w-full py-3 px-6 rounded-2xl border-2 border-white/20 text-white font-semibold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95 text-center">
-        Criar uma conta 🍻
-    </a>
-</div>
+                <p class="text-gray-400 text-sm mb-4">Novo por aqui?</p>
+                <a href="cadastro.html" class="inline-block w-full py-3 px-6 rounded-2xl border-2 border-white/20 text-white font-semibold hover:bg-white/10 hover:border-white/30 transition-all active:scale-95 text-center">
+                    Criar uma conta 🍻
+                </a>
+            </div>
         </div>
     </main>
 
