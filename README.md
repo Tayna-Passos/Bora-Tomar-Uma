@@ -1,55 +1,57 @@
-# [cite_start]🍻 Bora Tomar Uma? [cite: 1]
+# 🍻 Bora Tomar Uma?
+![Banner do Projeto](logo.jpg)
 
-[cite_start]O **Bora Tomar Uma?** é um aplicativo de delivery especializado na comercialização e entrega expressa de bebidas alcoólicas e não alcoólicas[cite: 2, 55]. [cite_start]O sistema visa solucionar gargalos logísticos, como a entrega de "última milha", oferecendo agilidade e conveniência para o público de São Paulo[cite: 56, 6].
+[cite_start]O **Bora Tomar Uma?** é uma plataforma de delivery especializada na comercialização e entrega expressa de bebidas alcoólicas e não alcoólicas[cite: 1, 55]. [cite_start]O sistema foi concebido para solucionar desafios logísticos, como a entrega de "última milha", proporcionando agilidade e conveniência aos utilizadores em São Paulo[cite: 56].
 
 🚀 **Acesse o sistema:** [https://tayna.free.nf/?i=1](https://tayna.free.nf/?i=1)
 
 ---
 
-## [cite_start]🛠️ Tecnologias e Infraestrutura [cite: 80, 200]
+## 🛠️ Tecnologias e Infraestrutura
+![Logo Bora Tomar Uma](logo02.jpg)
 
-[cite_start]O projeto utiliza uma stack focada em escalabilidade, segurança e alta disponibilidade[cite: 81, 114].
+[cite_start]O projeto utiliza uma stack focada em escalabilidade, segurança e alta disponibilidade[cite: 81]:
 
 * [cite_start]**Linguagem:** PHP (Backend & Lógica)[cite: 201, 202].
-* [cite_start]**Banco de Dados:** MySQL 8.0[cite: 122, 198].
-* [cite_start]**Containerização:** Docker (Isolamento de ambientes e portabilidade)[cite: 88, 90].
-* [cite_start]**Versionamento:** GitHub[cite: 205].
-* [cite_start]**Infraestrutura:** Pipeline CI/CD com monitoramento em tempo real[cite: 81, 92].
+* [cite_start]**Banco de Dados:** MySQL 8.0[cite: 198, 204].
+* [cite_start]**Containerização:** Docker para isolamento de ambientes e portabilidade[cite: 88, 90, 227].
+* [cite_start]**Versionamento:** GitHub[cite: 205, 207].
+* [cite_start]**DevOps:** Pipeline CI/CD com monitorização em tempo real[cite: 80, 81].
 
-### [cite_start]📈 Métricas de Performance [cite: 99]
+### 📈 Métricas de Performance
 * [cite_start]**Uptime:** 99.9%[cite: 100].
 * [cite_start]**Latência:** 45ms[cite: 101].
-* [cite_start]**Segurança:** Autenticação segura, criptografia de dados e 100% de compliance[cite: 96, 97, 264].
+* [cite_start]**Segurança:** 100% Compliance e autenticação segura[cite: 96, 264].
 
 ---
 
-## [cite_start]📋 Funcionalidades (CRUD) [cite: 58, 203]
+## 📋 Funcionalidades (CRUD)
 
-O sistema gerencia o fluxo operacional completo através das operações básicas de dados:
+[cite_start]O sistema gere o fluxo operacional completo através das seguintes operações[cite: 58, 203]:
 
 | Operação | Descrição |
 | :--- | :--- |
 | **Create** | [cite_start]Cadastro de produtos, clientes e pedidos com validação de maioridade[cite: 59, 210]. |
-| **Read** | [cite_start]Consulta de estoque e status de pedidos em tempo real[cite: 59, 212]. |
-| **Update** | [cite_start]Atualização de preços, dados cadastrais e níveis de estoque[cite: 59, 223]. |
+| **Read** | [cite_start]Consulta de stock, status de pedidos e relatórios em tempo real[cite: 59, 212]. |
+| **Update** | [cite_start]Atualização de preços, dados cadastrais e níveis de stock[cite: 59, 223]. |
 | **Delete** | [cite_start]Remoção de itens obsoletos e cancelamento de ordens pendentes[cite: 59, 224]. |
 
 ---
 
-## [cite_start]🗄️ Estrutura do Banco de Dados [cite: 122]
+## 🗄️ Estrutura do Banco de Dados
 
-[cite_start]A arquitetura de dados segue normas de normalização para manter a integridade do sistema[cite: 172]:
+[cite_start]A arquitetura de dados segue normas rigorosas de normalização e integridade[cite: 122, 172]:
 
-* [cite_start]**Usuários x Pedidos:** 1:N (Um usuário pode realizar vários pedidos)[cite: 175].
-* [cite_start]**Pedidos x Entregas:** 1:1 (Um pedido está vinculado a uma única entrega)[cite: 177].
-* [cite_start]**Produtos x Pedidos:** N:M (Produtos podem estar em múltiplos pedidos)[cite: 190].
-* [cite_start]**Pedidos x Pagamentos:** 1:1[cite: 195].
+* [cite_start]**Utilizadores x Pedidos:** Relação 1:N (Um utilizador pode realizar vários pedidos)[cite: 175].
+* [cite_start]**Pedidos x Entregas:** Relação 1:1 (Um pedido está vinculado a uma única entrega)[cite: 177].
+* [cite_start]**Produtos x Pedidos:** Relação N:M (Produtos podem estar presentes em múltiplos pedidos)[cite: 190].
+* [cite_start]**Pedidos x Pagamentos:** Relação 1:1[cite: 195].
 
 ---
 
-## [cite_start]👥 Equipe de Desenvolvimento [cite: 13]
+## 👥 Equipe de Desenvolvimento
 
-[cite_start]Projeto desenvolvido por alunos do curso de **CST em Análise e Desenvolvimento de Sistemas** da **UNINOVE (Campus Vergueiro)**[cite: 10, 14]:
+[cite_start]Este projeto foi desenvolvido por alunos do curso de **CST em Análise e Desenvolvimento de Sistemas** da **UNINOVE (Campus Vergueiro)**[cite: 9, 10]:
 
 * [cite_start]Amy Lee Luana Belen Canaviri Beltran [cite: 16]
 * [cite_start]Cesar Augusto Barbosa de Sousa [cite: 18]
@@ -66,5 +68,5 @@ O sistema gerencia o fluxo operacional completo através das operações básica
 * [cite_start]Tayná Cristina Passos da Costa [cite: 48]
 
 ---
-[cite_start]**Status do Projeto:** Ativo 🟢 [cite: 50, 64]
+[cite_start]**Status do Projeto:** Ativo 🟢 [cite: 50, 232]
 [cite_start]**Localização:** São Paulo, 2026 [cite: 11]
