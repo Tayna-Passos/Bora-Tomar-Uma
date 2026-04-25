@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAC - Bora Tomar Uma?</title>
+    <link rel="icon" type="image/png" href="../img/bebida-gelada.gif">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    
+    <style>
+        body {
+                
+            /* Caminho para sua imagem de fundo */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../sac/static/fundo.jpg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header-title { color: #ff8c42; text-align: center; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); }
+        .card {
+            background-color: rgba(38, 38, 38, 0.9); /* Leve transparência para mostrar o fundo */
+            border-radius: 12px;
+            padding: 25px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+        }
+        .card h2 { color: #ff8c42; font-size: 1.2rem; margin-top: 0; }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: #f5f5f5;
+            box-sizing: border-box;
+            color: #333;
+        }
+        .btn-enviar {
+            background-color: #ff8c42;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-enviar:hover { background-color: #e67a32; transform: scale(1.05); }
+        .tickets-empty { text-align: center; color: #ccc; padding: 20px; }
+        .footer-contact { 
+            text-align: center; 
+            font-size: 0.9rem; 
+            margin-top: 20px; 
+            background: rgba(0,0,0,0.6); 
+            padding: 20px; 
+            border-radius: 12px;
+        }
+        .footer-contact p { margin: 5px 0; }
+
+</style>
+<style>
+    body {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../sac/static/fundo.jpg.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .header-title { 
+        color: #ff8c42; 
+        text-align: center; 
+        margin-bottom: 30px; 
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.7); 
+        font-size: 2rem; /* Tamanho base */
+    }
+
+    .card {
+        background-color: rgba(38, 38, 38, 0.9);
+        border-radius: 12px;
+        padding: 25px;
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        backdrop-filter: blur(5px);
+        box-sizing: border-box; /* Garante que o padding não estoure a largura */
+    }
+
+    .card h2 { color: #ff8c42; font-size: 1.2rem; margin-top: 0; }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 6px;
+        border: 1px solid #444;
+        background-color: #f5f5f5;
+        box-sizing: border-box;
+        color: #333;
+        font-size: 16px; /* Evita zoom automático no iOS ao focar */
+    }
+
+    .btn-enviar {
+        background-color: #ff8c42;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+        width: auto;
+    }
+
+    .btn-enviar:hover { background-color: #e67a32; transform: scale(1.05); }
+
+    .tickets-empty { text-align: center; color: #ccc; padding: 20px; }
+
+    .footer-contact { 
+        text-align: center; 
+        font-size: 0.9rem; 
+        margin-top: 20px; 
+        background: rgba(0,0,0,0.6); 
+        padding: 20px; 
+        border-radius: 12px;
+        max-width: 800px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Ajuste do Botão Voltar */
+    .link-botao {
+        align-self: flex-start; /* Alinha o link à esquerda no flex container */
+        margin-bottom: 20px;
+    }
+
+    .botao-seta {
+        background-color: #FF8C00;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 50px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .botao-seta:hover {
+        background-color: #d47705;
+        padding-right: 25px;
+    }
+
+    /* --- MEDIA QUERY PARA CELULAR --- */
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+
+        .header-title {
+            font-size: 1.5rem; /* Título menor no celular */
+        }
+
+        .card {
+            padding: 15px;
+        }
+
+        .btn-enviar {
+            width: 100%; /* Botão ocupa a largura toda no celular */
+        }
+
+        .botao-seta {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+    }
+</style>
+</head>
+<body>
+    <a href="../index.html" class="link-botao">
+        <button class="botao-seta">
+            <span>&#11013;</span> Voltar
+        </button>
+    </a>
+    <h1 class="header-title">Central de Atendimento - Bora Tomar Uma? 🍻</h1>
+    <form method="post" action="enviarsac.php">
+
+    <div class="card">
+     Nome   <input type="text" id="nome" placeholder="Seu Nome" name="nome">
+     Email   <input type="email" id="email" placeholder="Seu Email" name="email">
+     Assunto  <input type="text" id="assunto" placeholder="Assunto" name="assunto">
+     Mensagem   <textarea id="mensagem" rows="4" placeholder="Descreva sua solicitação..." name="mensagem"></textarea>
+    <button id="enviar-ticket" class="btn-enviar">Enviar Ticket</button>
+</form></div>
+
+    <div class="card">
+        <h2>Tickets Abertos</h2>
+        <div id="lista-tickets" class="tickets-empty">
+            Nenhum ticket criado ainda.
+        </div>
+    </div>
+
+    <div class="footer-contact">
+        <p style="color: #ff8c42;">Não conseguiu resolver seu problema no Sac de Atendimento? Ligue para a gente!</p>
+        <h3>Telefones para Contato 📞</h3>
+        <p><i class="fas fa-phone"></i> <strong>Suporte Geral:</strong> (11) 4002-8922</p>
+        <p><i class="fas fa-comment"></i> <strong>WhatsApp Atendimento:</strong> (11) 98888-7777</p>
+    </div>
+
+    <script type="py">
+        from pyscript import when
+        import js
+
+        @when("click", "#enviar-ticket")
+        def processar_ticket(event):
+            nome = js.document.getElementById("nome").value
+            assunto = js.document.getElementById("assunto").value
+            
+            if nome and assunto:
+                js.alert(f"Ticket de {nome} enviado com sucesso!")
+                container = js.document.getElementById("lista-tickets")
+                container.innerHTML = f"<div style='border-left: 4px solid #ff8c42; padding-left: 10px; text-align:left; margin-bottom:10px;'><strong>{assunto}</strong><br><small>Enviado por: {nome}</small></div>"
+                container.classList.remove("tickets-empty")
+            else:
+                js.alert("Por favor, preencha o nome e o assunto.")
+    </script>
+</body>
+</html>

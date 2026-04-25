@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bora Tomar Uma? - Cadastro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="../img/bebida-gelada.gif">
+    <style>
+        /* Importando fonte similar à da imagem */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            /* Usando um fundo de bar escuro para simular a sua imagem */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Container Principal (Efeito Vidro) */
+        .glass-card {
+            background: rgba(25, 25, 25, 0.65);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px; /* Bordas bem arredondadas como na imagem */
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        /* Ícone do Logo */
+        .logo-box {
+            background-color: #e48f4f; /* Laranja da imagem */
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .logo-box i {
+            font-size: 28px;
+            color: #1a1a1a;
+        }
+
+        .online-dot {
+            width: 15px;
+            height: 15px;
+            background-color: #00ca4e;
+            border: 3px solid #1a1a1a;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+        }
+
+        h2 {
+            color: white;
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* Estilização dos Inputs */
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #999;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 5px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #e48f4f;
+        }
+
+        input::placeholder {
+            color: #555;
+        }
+
+        /* Botão Entrar / Cadastrar */
+        .btn-primary {
+            width: 100%;
+            background-color: #e48f4f;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff9f5a;
+            transform: translateY(-2px);
+        }
+
+        .footer-text {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        /* Botão de Voltar / Login */
+        .btn-outline {
+            width: 100%;
+            background: transparent;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #666;
+        }
+
+        .botao-seta {
+    background-color: #FF8C00;
+    color: white;
+    padding: 15px 15px;
+    border: none;
+    border-radius: 50px; /* Estilo 'pílula' mais moderno */
+    font-size: 15px;
+    font-family: sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-right: 900px;
+  }
+
+  /* Efeito de movimento na seta ao passar o mouse */
+  .botao-seta:hover {
+    background-color: #d47705;
+    padding-right: 20px; /* O botão estica levemente */
+  }
+  /* Ajustes para Mobile - Cadastro */
+@media (max-width: 768px) {
+    /* Impede o movimento lateral da página */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        height: auto; /* Permite rolar para baixo se o teclado subir */
+        min-height: 100vh;
+    }
+
+    /* Ajusta o card de vidro para não colar nas bordas */
+    .glass-card {
+        width: 90%;
+        padding: 25px;
+        margin: 20px auto;
+        border-radius: 25px; /* Bordas um pouco menores para telas pequenas */
+    }
+
+    /* O VILÃO: Ajustando a margem da seta que estava em 900px */
+    .botao-seta {
+        margin-right: 0 !important;
+        margin-bottom: 20px;
+        width: auto;
+        display: inline-flex;
+    }
+
+    /* Garante que o container da seta não empurre o layout */
+    .link-botao {
+        display: block;
+        text-align: left; /* Alinha o botão de voltar à esquerda no card */
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="glass-card">
+        <a href="../index.html" class="link-botao">
+        <button class="botao-seta">
+            <span>&#11013;</span> Voltar
+        </button>
+    </a>
+        <div class="logo-box">
+            <i class="fas fa-beer-mug-empty"></i>
+            <div class="online-dot"></div>
+        </div>
+        <h2>Criar conta</h2>
+        <p class="subtitle">Junte-se à nossa comunidade cervejeira.</p>
+
+        <form action="cadastrar.php" method="POST">
+    
+    <div class="input-group">
+        <label for="nome">Nome Completo</label>
+        <input type="text" id="nome" name="nome" placeholder="ex: mestre_cervejeiro" required>
+    </div>
+
+    <div class="input-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+    </div>
+
+    <div class="input-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+    </div>
+
+    <button type="submit" class="btn-primary">Finalizar Cadastro</button>
+</form>
+
+        <p class="footer-text">Já possui uma conta?</p>
+        <a href="login.php" class="btn-outline">Voltar para o Login 🍻</a>
+    </div>
+
+</body>
+</html>
